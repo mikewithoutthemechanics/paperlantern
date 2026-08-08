@@ -1,12 +1,14 @@
 # PaperLantern Web — paperlantern.xyz
 
-A captivating single-page site for PaperLantern, built to feel engineered — because the brand is.
+An experimental, art-directed SPA that demonstrates the Exposure System itself.
+The site is the proof: as you scroll, the page executes Position → Content → Distribute → Amplify → Compound.
 
 ## Stack
 
 - **Vite** + **React**
-- **GSAP** + ScrollTrigger — scroll-driven reveal animations
-- **Three.js** — interactive 3D lantern core + particle field in the hero
+- **GSAP** + ScrollTrigger — scroll-driven animation and word-scramble effects
+- **Lenis** — buttery smooth scrolling
+- **Three.js** — interactive 3D lantern core, orbital rings, shards, lens rays, particle field
 - Google Fonts: Inter + JetBrains Mono
 
 ## Run locally
@@ -28,30 +30,32 @@ Output lands in `web/dist/`.
 
 ## Deploy to Vercel
 
-1. Push this repo to GitHub/GitLab.
-2. Import the repo in Vercel as a new project.
-3. Root directory: `web` (the Vite app).
-4. Vercel auto-detects Vite. Framework preset: **Vite**, build command `npm run build`, output `dist`.
-5. Deploy.
+1. Push repo to GitHub/GitLab.
+2. Import in Vercel.
+3. Root: `web` (auto-detects Vite).
+4. Deploy.
 
-## Features / sections
+`vercel.json` already configured.
 
-- **Hero** — 3D interactive lantern (Three.js), animated entrance, terminal window
-- **Problem** — three cards: positioning / content / distribution
-- **System / pillars** — four outcomes: positioning, content, distribution, AI amplification
-- **How we work** — Diagnose / Build / Compound
-- **Proof** — Punctual Plumbers exposure-system log with animated counters
-- **Fence** — what we don't do
-- **Final CTA** — Exposure Audit, mailto for now
+## Creative concepts
+
+| Section | What happens |
+|---|---|
+| **01 / Position** | Pinned hero — 3D lantern, kinetic headline "It's engineered." |
+| **02 / Content** | Word-scramble reveal, source → fragments disperse |
+| **03 / Distribute** | Channel frames "wired" to booking/pipeline/search |
+| **04 / Amplify** | Infinite marquee rows — one system, infinite output |
+| **05 / Compound** | Proof log + animated metric counters |
+| **06 / Fence** | What we don't do |
 
 ## Customise
 
-- Copy: `src/App.jsx`
+- Copy / scenes: `src/App.jsx`
 - Styling: `src/styles.css`
 - 3D scene: `src/three/LanternScene.jsx`
-- Metrics / proofs: `metrics` array in `src/App.jsx`
+- Booking link: `BOOKING_URL` constant in `src/App.jsx` (currently `https://cal.com/michaelkidd/exposure-audit`)
 
 ## Notes
 
-- CTA is currently `mailto:hello@paperlantern.xyz`. Swap for a real booking link (Cal.com / scheduling in EspoCRM) when ready.
-- Currency-aware pricing isn't wired into the UI yet; that's a next enhancement for the audit/productized offering.
+- Three.js is lazy-loaded (code split) so the main bundle stays lean.
+- CTA links book via Cal.com. Payment should be wired into the Cal.com event ($495 Exposure Audit).
