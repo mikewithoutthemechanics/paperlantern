@@ -1,12 +1,12 @@
-import { useLayoutEffect, useRef, useState, lazy, Suspense } from 'react'
+import { useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Lenis from 'lenis'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const LanternScene = lazy(() => import('./three/LanternScene.jsx'))
 
-// TODO: replace with your real Cal.com scheduling link
 const BOOKING_URL = 'https://cal.com/michaelkidd/exposure-audit'
 
 const metrics = [
@@ -15,394 +15,352 @@ const metrics = [
   { value: 290, suffix: '+', label: 'jobs booked' },
 ]
 
-const pillars = [
-  { n: '01', title: 'Positioning', desc: "Who you are, why it matters, and why a competitor can't say the same thing." },
-  { n: '02', title: 'Content', desc: 'The raw material of attention — built to be found and redistributed, not just posted.' },
-  { n: '03', title: 'Distribution', desc: 'Getting the work in front of the right people, on the channels where they already are.' },
-  { n: '04', title: 'AI Amplification', desc: 'Systems that scale everything above without scaling headcount.' },
-]
-
-const steps = [
-  { n: '01', title: 'Diagnose', desc: 'We map where visibility is actually breaking down before proposing anything.' },
-  { n: '02', title: 'Build', desc: 'We design and ship the system itself — not a recommendations document.' },
-  { n: '03', title: 'Compound', desc: 'We stay in the system as it runs, refining instead of resetting every quarter.' },
-]
-
-const noList = [
-  'One-off campaigns',
-  'Vanity metrics',
-  'Decks-as-deliverables',
-  'Content calendars that reset every quarter',
-]
-
-const auditIncludes = [
-  'Mini visibility audit — positioning, content, distribution, operations',
-  'Visibility breakdown — where you\u2019re invisible, what\u2019s losing you jobs',
-  'Priority fixes list — what to do first, what can wait',
-  '30–45 min walkthrough call — we go through it together',
-]
-
-function Counter({ to, suffix = '', duration = 1.8 }) {
+function Counter({ to, suffix = '', duration = 2.4, label }) {
   const ref = useRef(null)
-  const [val, setVal] = useState(0)
+  const numRef = useRef(null)
 
   useLayoutEffect(() => {
     const obj = { v: 0 }
     const tween = gsap.to(obj, {
       v: to,
       duration,
-      ease: 'power2.out',
+      ease: 'power3.out',
       scrollTrigger: {
         trigger: ref.current,
-        start: 'top 88%',
+        start: 'top 82%',
         once: true,
       },
-      onUpdate: () => setVal(Math.round(obj.v)),
+      onUpdate: () => {
+        if (numRef.current) numRef.current.textContent = Math.round(obj.v) + suffix
+      },
     })
     return () => {
       tween.scrollTrigger?.kill()
       tween.kill()
     }
-  }, [to, duration])
+  }, [to, suffix, duration])
 
   return (
-    <div ref={ref}>
-      <div className="value">{val}{suffix}</div>
+    <div ref={ref} className="metric">
+      <div className="metric-num" ref={numRef}>0{suffix}</div>
+      <div className="metric-label">{label}</div>
     </div>
   )
 }
 
-function UseLanternLockup() {
-  const markRef = useRef(null)
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(markRef.current, {
-        y: 4,
-        repeat: -1,
-        yoyo: true,
-        duration: 2.2,
-        ease: 'sine.inOut',
-      })
-    }, markRef)
-    return () => ctx.revert()
+function useLenis() {
+  useEffect(() => {
+    const lenis = new Lenis({ smoothWheel: true, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
+    lenis.on('scroll', ScrollTrigger.update)
+    const raf = (time) => lenis.raf(time * 1000)
+    gsap.ticker.add(raf)
+    gsap.ticker.lagSmoothing(0)
+    return () => {
+      gsap.ticker.remove(raf)
+      lenis.destroy()
+    }
   }, [])
-
-  return (
-    <span className="logo">
-      <span ref={markRef} className="logo-mark">◐</span>
-      PaperLantern
-    </span>
-  )
 }
 
 export default function App() {
-  const ref = useRef(null)
+  const root = useRef(null)
+
+  useLenis()
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // hero entrance
-      gsap.from('.hero .hero-left > *', {
-        y: 44,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.12,
-        ease: 'power3.out',
-        delay: 0.15,
-      })
-      gsap.from('.terminal', {
-        y: 60,
-        opacity: 0,
-        duration: 1.1,
-        ease: 'power3.out',
-        delay: 0.55,
+      // ---------- hero entrance ----------
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      tl.from('.hero-line', { yPercent: 110, duration: 1.3, stagger: 0.09 })
+        .from('.hero-meta', { opacity: 0, y: 22, duration: 0.8, stagger: 0.08 }, '-=0.6')
+        .from('.hero-cta-row', { opacity: 0, y: 30, duration: 0.7 }, '-=0.4')
+
+      // ---------- pinned "position" section ----------
+      gsap.utils.toArray('.pin-scene').forEach((scene) => {
+        const tweenTarget = scene.querySelector('[data-scene-tween]')
+        gsap.to(tweenTarget, {
+          scale: 1.2,
+          opacity: 0.15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: scene,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        })
       })
 
-      // reveal sections
+      // word scramble effect
+      gsap.utils.toArray('.scramble').forEach((el) => {
+        const original = el.textContent
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        })
+        let progress = 0
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*+/'
+        tl.to(el, {
+          duration: 1.6,
+          ease: 'none',
+          onUpdate: function () {
+            progress = this.progress()
+            const shown = Math.floor(progress * original.length)
+            let out = original.slice(0, shown)
+            for (let i = shown; i < original.length; i++) {
+              out += chars[Math.floor(Math.random() * chars.length)]
+            }
+            el.textContent = out
+          },
+          onComplete: () => { el.textContent = original }
+        })
+      })
+
+      // ---------- content dispersion ----------
+      gsap.to('.content-fragments .frag', {
+        x: () => gsap.utils.random(-180, 180),
+        y: () => gsap.utils.random(-80, 80),
+        opacity: 0.25,
+        duration: 1.1,
+        stagger: 0.05,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.content-scene',
+          start: 'top 55%',
+          once: true,
+        },
+      })
+
+      // ---------- amplification repeated rows ----------
+      gsap.to('.amp-row', {
+        xPercent: -18,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.amp-scene',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+
+      // ---------- metrics ----------
+      gsap.from('.metric', {
+        opacity: 0,
+        y: 26,
+        duration: 0.8,
+        stagger: 0.14,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.compound-scene', start: 'top 70%', once: true },
+      })
+
+      // ---------- generic reveal ----------
       gsap.utils.toArray('.reveal').forEach((el) => {
         gsap.fromTo(el,
-          { autoAlpha: 0, y: 28 },
+          { autoAlpha: 0, y: 40 },
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.9,
+            duration: 1,
             ease: 'power2.out',
             scrollTrigger: { trigger: el, start: 'top 85%', once: true },
           }
         )
       })
 
-      // card stagger for grids
-      document.querySelectorAll('[data-stagger]').forEach((wrap) => {
-        const targets = wrap.querySelectorAll('.card, .pillar, .step')
-        gsap.fromTo(targets,
-          { autoAlpha: 0, y: 32 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.75,
-            stagger: 0.12,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: wrap, start: 'top 82%', once: true },
-          }
-        )
+      // ---------- final cta pulses ----------
+      gsap.to('.cta-pulse', {
+        scale: 1.08,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
       })
-
-      // log timeline stagger
-      gsap.fromTo('.log-item',
-        { autoAlpha: 0, x: -36 },
-        {
-          autoAlpha: 1,
-          x: 0,
-          duration: 0.7,
-          stagger: 0.16,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: '.log-timeline', start: 'top 80%', once: true },
-        }
-      )
-    }, ref)
+    }, root)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <div ref={ref}>
-      {/* NAV */}
-      <nav className="nav">
-        <div className="container nav-inner">
-          <a href="#top"><UseLanternLockup /></a>
-          <div className="nav-links">
-            <a href="#audit">Exposure Audit</a>
-            <a href="#system">System</a>
-            <a href="#outcomes">Outcomes</a>
-            <a href="#work">How we work</a>
-            <a href="#proof">Proof</a>
-          </div>
-          <a className="cta" href={BOOKING_URL}>Book an Exposure Audit</a>
+    <div ref={root} className="exp">
+      {/* ---------- top bar ---------- */}
+      <header className="topbar">
+        <div className="topbar-inner">
+          <a className="brand" href="#top">
+            <span className="brand-mark">◐</span>
+            <span className="brand-name">PaperLantern</span>
+            <span className="brand-note">.xyz</span>
+          </a>
+          <nav className="nav-links">
+            <a href="#position">Position</a>
+            <a href="#content">Content</a>
+            <a href="#distribute">Distribute</a>
+            <a href="#amplify">Amplify</a>
+            <a href="#compound">Compound</a>
+          </nav>
+          <a className="cta-mini" href={BOOKING_URL}>Book audit</a>
         </div>
-      </nav>
+      </header>
 
-      {/* HERO */}
-      <section className="hero" id="top">
-        <div className="canvas-wrap">
-          <Suspense fallback={null}>
-            <LanternScene />
-          </Suspense>
+      {/* ---------- 01: POSITION ---------- */}
+      <section className="pin-scene scene-position" id="position">
+        <div className="bg-canvas" data-scene-tween>
+          <Suspense fallback={null}><LanternScene /></Suspense>
         </div>
-        <div className="hero-overlay" />
-        <div className="hero-inner">
-          <div className="hero-left">
-            <span className="eyebrow">An Exposure Systems Firm</span>
-            <h1>
-              Visibility isn't <span className="accent">luck.</span><br />
-              <span className="grad">It's engineered.</span>
+        <div className="scene-ink" data-scene-tween />
+        <div className="container hero-stack">
+          <p className="eyebrow rev">An Exposure Systems Firm / 001</p>
+          <div className="hero-lines">
+            <h1 className="headline">
+              <span className="hero-line">Visibility isn't</span>
+              <span className="hero-line amber">luck.</span>
+              <span className="hero-line outline">It's engineered.</span>
             </h1>
-            <p className="sub">
-              You're invisible online and losing jobs to competitors who aren't better — just more visible.
-              PaperLantern builds the positioning, content, and distribution infrastructure most agencies only strategize about.
-            </p>
-            <div className="hero-actions">
-              <a className="cta" href={BOOKING_URL}>Book an Exposure Audit</a>
-              <a className="cta ghost" href="#proof">See how we ship</a>
+          </div>
+          <p className="hero-meta">
+            Most agencies sell tactics. We build the infrastructure that makes attention compound.
+          </p>
+          <div className="hero-cta-row">
+            <a className="cta-big" href={BOOKING_URL}>Start with an Exposure Audit →</a>
+            <span className="hero-meta mono">SA · UAE · UK · AU</span>
+          </div>
+          <div className="corner-meta tl">31.2577° S</div>
+          <div className="corner-meta br">28.0473° E</div>
+        </div>
+      </section>
+
+      {/* ---------- 02: CONTENT / THE FUTURE ---------- */}
+      <section className="scene-future" id="content">
+        <div className="container">
+          <div className="section-tag reveal"><span>02 / Content</span></div>
+          <h2 className="reason-line reveal">The future of visibility is not<br /><span className="scramble">louder. It's systemic.</span></h2>
+          <div className="content-scene">
+            <div className="source-line reveal">
+              <span className="mono">source.md</span>
+              <p className="big-statement">
+                Positioning that's actually differentiated.<br />
+                Content built to be redistributed.<br />
+                Distribution wired into how you already operate.
+              </p>
             </div>
-            <div className="hero-log">
-              <span className="term-key">$ exposure-system.log</span><br />
-              <span className="term-dim">// punctual-plumbers.co.za</span><br />
-              <span className="term-dim">status:</span> <span className="term-bright">compounding</span><br />
-              <span className="term-dim">conversion:</span> <span className="term-bright term-key">+22%</span> <span className="term-dim">response:</span> <span className="term-bright term-key">-95%</span> <span className="term-dim">booked:</span> <span className="term-bright term-key">290+</span>
+            <div className="content-fragments">
+              {['position', 'redistribute', 'system', 'attention', 'engine', 'export', 'repeat', 'amplify'].map((w) => (
+                <span className="frag mono" key={w}>{w}</span>
+              ))}
             </div>
           </div>
-          <div className="hero-right">
-            <div className="terminal">
-              <div className="terminal-title">
-                <span className="dot red" />
-                <span className="dot amber" />
-                <span className="dot" />
-                <span style={{ marginLeft: 6 }}>exposure-system.sh</span>
+        </div>
+      </section>
+
+      {/* ---------- 03: DISTRIBUTE ---------- */}
+      <section className="scene-distribute" id="distribute">
+        <div className="container">
+          <div className="section-tag reveal"><span>03 / Distribution</span></div>
+          <h2 className="reveal">It's not about reaching everyone.<br /><span className="amber">It's about reaching the right ones.</span></h2>
+          <div className="dist-grid">
+            <div className="frame reveal">
+              <div className="frame-head">GOOGLE / LOCAL</div>
+              <div className="frame-body">
+                <span className="block amber-block"></span>
+                <span className="block line-block"></span>
+                <span className="block gray-block"></span>
               </div>
-              <div className="term-line"><span className="term-key">$</span> paperlantern --diagnose</div>
-              <div className="term-line"><span className="term-dim"># mapping visibility leaks…</span></div>
-              <div className="term-line"><span className="term-key">positioning:</span> <span className="term-bright">breaking</span></div>
-              <div className="term-line"><span className="term-key">content:</span> <span className="term-bright">not redistributable</span></div>
-              <div className="term-line"><span className="term-key">distribution:</span> <span className="term-bright">not wired</span></div>
-              <div className="term-line"><span className="term-key">recommendation:</span> <span className="term-bright term-key">build the system</span></div>
-              <div className="term-line"><span className="term-key">$</span> <span className="blink" /></div>
+              <div className="frame-status mono">wired → booking</div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* EXPOSURE AUDIT PRODUCT */}
-      <section className="section" id="audit">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">Start here</span>
-            <h2>The Exposure Audit</h2>
-            <p className="muted">A focused visibility audit that shows exactly where your business is losing leads to competitors — before you spend another rand, pound, or dollar on tactics.</p>
-          </div>
-          <div className="audit-grid" data-stagger>
-            <div className="card audit-price">
-              <span className="tag">Productized audit</span>
-              <div className="audit-amount">$495</div>
-              <div className="muted">~R8,900 · ~£390 · ~$AUD750</div>
-              <ul className="check-list">
-                {auditIncludes.map((item) => (
-                  <li key={item}>✓ {item}</li>
-                ))}
-              </ul>
-              <a className="cta" href={BOOKING_URL} style={{ marginTop: 18, width: '100%' }}>
-                Book the audit →{'\u00A0'}{'\u2192'}
-              </a>
-            </div>
-            <div className="card audit-note">
-              <span className="tag">How it works</span>
-              <h3>Five business days.</h3>
-              <p>Complete a short intake form, we run the audit, you get a visibility breakdown + priority fixes list, and we walk through it together on a 30–45 min call.</p>
-              <p style={{ marginTop: 14 }}>If the fit is clear, we can scope a full <strong>Build</strong> or <strong>Compound</strong> engagement after. If not, you get an honest DIY roadmap.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PROBLEM */}
-      <section className="section" id="system">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">The Problem</span>
-            <h2>You're not invisible because you're bad. You're invisible because you don't have a system.</h2>
-            <p className="muted">Competitors are winning jobs they don't deserve because they're visible when the customer is looking. PaperLantern doesn't sell tactics. We build the infrastructure that makes visibility compound.</p>
-          </div>
-          <div className="problem-grid" data-stagger>
-            <div className="card">
-              <span className="tag">01</span>
-              <h3>Positioning</h3>
-              <p>If a competitor can say the same sentence about themselves, you don't have a position. You have a placeholder.</p>
-            </div>
-            <div className="card">
-              <span className="tag">02</span>
-              <h3>Content</h3>
-              <p>Most content is publish-and-forget. Real content is built to be found and redistributed — forever.</p>
-            </div>
-            <div className="card">
-              <span className="tag">03</span>
-              <h3>Distribution</h3>
-              <p>Great work means nothing if it never reaches the people who need it. Distribution is the difference between noise and revenue.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* OUTCOMES */}
-      <section className="section" id="outcomes">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">What's in the system</span>
-            <h2>Outcomes, not deliverables</h2>
-            <p className="muted">We don't hand you a deck. We ship the system — and show our work.</p>
-          </div>
-          <div className="pillars" data-stagger>
-            {pillars.map((p) => (
-              <div className="pillar" key={p.n}>
-                <div className="num">{p.n}</div>
-                <h3>{p.title}</h3>
-                <p>{p.desc}</p>
+            <div className="frame reveal">
+              <div className="frame-head">LINKEDIN / OWNER</div>
+              <div className="frame-body">
+                <span className="block amber-block"></span>
+                <span className="block line-block"></span>
+                <span className="block line-block"></span>
               </div>
-            ))}
+              <div className="frame-status mono">wired → pipeline</div>
+            </div>
+            <div className="frame reveal">
+              <div className="frame-head">ANSWER ENGINE</div>
+              <div className="frame-body">
+                <span className="block amber-block"></span>
+                <span className="block amber-block"></span>
+                <span className="block line-block"></span>
+              </div>
+              <div className="frame-status mono">wired → search</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* HOW WE WORK */}
-      <section className="section" id="work">
+      {/* ---------- 04: AMPLIFY ---------- */}
+      <section className="scene-amp amplify" id="amplify">
         <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">How we work</span>
-            <h2>Diagnose. Build. Compound.</h2>
-            <p className="muted">Not a recommendations document. Not a deck. A system that ships results.</p>
+          <div className="section-tag reveal"><span>04 / AI Amplification</span></div>
+          <h2 className="reveal">One system.</h2>
+          <p className="reveal muted-big">Infinite output. Same headcount.</p>
+        </div>
+        <div className="amp-marquee">
+          {[1,2,3].map((i) => (
+            <div className="amp-row" key={i}>
+              {Array.from({length: 6}).map((_, j) => (
+                <span key={j} className="amp-word mono">{i}.{j} exposure powered redistributed ×{i}</span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- 05: COMPOUND ---------- */}
+      <section className="scene-compounds" id="compound">
+        <div className="container">
+          <div className="section-tag reveal"><span>05 / Proof</span></div>
+          <h2 className="reveal">Compounding, not resetting.</h2>
+          <div className="proof-log">
+            <div className="log-row reveal">
+              <div className="log-week mono">WEEK 01</div>
+              <div className="log-txt"><strong>Positioning</strong><span>From "local plumber" to the only trades brand running a real booking system.</span></div>
+            </div>
+            <div className="log-row reveal">
+              <div className="log-week mono">WEEK 02–03</div>
+              <div className="log-txt"><strong>Build</strong><span>Site, job management, booking flow. Infrastructure, not a brochure.</span></div>
+            </div>
+            <div className="log-row reveal">
+              <div className="log-week mono">WEEK 04</div>
+              <div className="log-txt"><strong>Distribution</strong><span>Local SEO + answer-engine visibility wired directly into booking.</span></div>
+            </div>
           </div>
-          <div className="steps" data-stagger>
-            {steps.map((s) => (
-              <div className="step" key={s.n}>
-                <div className="step-index">0{s.n} / 03</div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-              </div>
-            ))}
+          <div className="metrics-row">
+            {metrics.map((m) => <Counter key={m.label} to={m.value} suffix={m.suffix} label={m.label} />)}
           </div>
         </div>
       </section>
 
-      {/* PROOF */}
-      <section className="section" id="proof">
+      {/* ---------- 06: FENCE ---------- */}
+      <section className="scene-fence">
         <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">exposure-system.log — punctual-plumbers.co.za</span>
-            <h2>Proof, not promises.</h2>
-            <p className="muted">This is what a shipped system looks like — infrastructure, not a brochure page.</p>
-          </div>
-
-          <div className="log-timeline">
-            {[
-              { week: 'WEEK 01', strong: 'POSITIONING', desc: 'Repositioned from "local plumber" to the only trades brand in the region running a real booking system.' },
-              { week: 'WEEK 02-03', strong: 'BUILD', desc: 'Shipped the site, job management system, and booking flow — infrastructure, not a brochure page.' },
-              { week: 'WEEK 04', strong: 'DISTRIBUTION', desc: 'Wired local SEO and answer-engine visibility directly into the booking flow.' },
-            ].map((row) => (
-              <div className="log-item" key={row.week}>
-                <div className="log-week">{row.week}</div>
-                <div className="log-action">
-                  <strong>{row.strong}</strong>
-                  <span>{row.desc}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="metrics">
-            {metrics.map((m) => (
-              <div className="metric reveal" key={m.label}>
-                <Counter to={m.value} suffix={m.suffix} />
-                <div className="label">{m.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* WHAT WE DON'T DO */}
-      <section className="section" id="fence">
-        <div className="container">
-          <div className="section-head reveal">
-            <span className="eyebrow">The fence</span>
-            <h2>What we don't do</h2>
-          </div>
+          <div className="section-tag reveal"><span>06 / The fence</span></div>
           <ul className="no-list">
-            {noList.map((item) => (
-              <li className="reveal" key={item}><span className="x">✕</span>{item}</li>
-            ))}
+            <li className="reveal"><span className="x">✕</span> One-off campaigns</li>
+            <li className="reveal"><span className="x">✕</span> Vanity metrics</li>
+            <li className="reveal"><span className="x">✕</span> Decks-as-deliverables</li>
+            <li className="reveal"><span className="x">✕</span> Quarterly resets</li>
           </ul>
         </div>
       </section>
 
-      {/* FINAL CTA */}
-      <section className="section final">
-        <div className="container reveal">
-          <span className="eyebrow">Get seen. Get booked.</span>
-          <h2>Ready to engineer your visibility?</h2>
-          <p>
-            Book an Exposure Audit and we'll show exactly where your visibility is breaking —
-            before you spend another rand, pound, or dollar on tactics.
-          </p>
-          <a className="cta" href={BOOKING_URL}>Book an Exposure Audit</a>
+      {/* ---------- final CTA ---------- */}
+      <section className="final-cta">
+        <div className="container">
+          <p className="eyebrow reveal">Get seen. Get booked.</p>
+          <h2 className="reveal">Let's engineer your visibility.</h2>
+          <div className="cta-pulse-wrap reveal">
+            <a className="cta-big" href={BOOKING_URL}>Book an Exposure Audit →</a>
+          </div>
+          <p className="mono muted-sm">The future of visibility is a system. Start with a map.</p>
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* ---------- footer ---------- */}
       <footer className="footer">
         <div className="container footer-inner">
-          <div>
-            <strong style={{ color: 'var(--text)' }}>PaperLantern</strong> · An Exposure Systems Firm
-          </div>
-          <div>South Africa · UAE · UK · Australia</div>
-          <div>paperlantern.xyz</div>
+          <span>PaperLantern — Exposure Systems Firm</span>
+          <span className="mono">South Africa · UAE · UK · Australia</span>
+          <span className="mono">paperlantern.xyz</span>
         </div>
       </footer>
     </div>
