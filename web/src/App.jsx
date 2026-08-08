@@ -465,10 +465,11 @@ export default function App() {
       </section>
 
       {/* ---------- 05: COMPOUND ---------- */}
-      <section className="scene-compounds" id="compound">
+      <section className="scene-compounds" id="proof">
         <div className="container">
           <div className="section-tag reveal"><span>05 / Proof</span></div>
           <h2 className="reveal">Compounding, not resetting.</h2>
+          <p className="reveal muted-big">This is what a shipped system looks like — infrastructure, not a brochure page.</p>
           <div className="proof-log">
             <div className="log-row reveal">
               <div className="log-week mono">WEEK 01</div>
@@ -485,6 +486,9 @@ export default function App() {
           </div>
           <div className="metrics-row">
             {metrics.map((m) => <Counter key={m.label} to={m.value} suffix={m.suffix} label={m.label} />)}
+          </div>
+          <div className="case-promo reveal">
+            <a className="cta-big" href="mailto:hello@paperlantern.xyz?subject=Full%20case%20study">Send me the full case study →</a>
           </div>
         </div>
       </section>

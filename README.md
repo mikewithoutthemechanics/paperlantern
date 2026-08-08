@@ -42,6 +42,7 @@ PaperLantern builds the positioning, content, and distribution infrastructure mo
 | [docs/04-case-studies](docs/04-case-studies) | Proof — Punctual Plumbers + Meridian placeholder |
 | [docs/05-marketing](docs/05-marketing) | Web copy, channels, outreach |
 | [docs/06-operations](docs/06-operations) | Sales, playbooks, automations, tooling, templates |
+| [docs/07-growth](docs/07-growth) | Acquisition plan: first 3 Exposure Audit customers |
 
 ## Founder
 
