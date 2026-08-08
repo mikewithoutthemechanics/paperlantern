@@ -52,7 +52,7 @@ Output lands in `web/dist/`.
 
 - Copy / scenes: `src/App.jsx`
 - Styling: `src/styles.css`
-- 3D scene: `src/three/LanternScene.jsx`
+- 3D scene: `src/three/ParticleLantern.jsx`
 - Booking link: `BOOKING_URL` constant in `src/App.jsx` (currently `https://cal.com/michaelkidd/exposure-audit`)
 
 ## Notes

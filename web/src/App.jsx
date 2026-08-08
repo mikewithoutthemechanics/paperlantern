@@ -5,7 +5,7 @@ import Lenis from 'lenis'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const LanternScene = lazy(() => import('./three/LanternScene.jsx'))
+const Hero3D = lazy(() => import('./three/ParticleLantern.jsx'))
 
 const BOOKING_URL = 'https://cal.com/michaelkidd/exposure-audit'
 
@@ -60,6 +60,31 @@ function useLenis() {
       lenis.destroy()
     }
   }, [])
+}
+
+function Intro() {
+  const ref = useRef(null)
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      tl.from('.intro-word', { yPercent: 120, duration: 0.8, stagger: 0.06 })
+        .from('.intro-sub', { opacity: 0, y: 14, duration: 0.5 }, '-=0.4')
+        .to(ref.current, { autoAlpha: 0, duration: 0.7, delay: 1.1, ease: 'power2.inOut' })
+    }, ref)
+    return () => ctx.revert()
+  }, [])
+  return (
+    <div className="intro" ref={ref} aria-hidden="true">
+      <div className="intro-inner">
+        <div className="intro-line">
+          {['chaos', '→', 'order', '→', 'exposure'].map((w, i) => (
+            <span className={'intro-word' + (i % 2 === 1 ? ' intro-arrow' : '')} key={i}>{w}</span>
+          ))}
+        </div>
+        <div className="intro-sub">PaperLantern · Exposure Systems Firm</div>
+      </div>
+    </div>
+  )
 }
 
 export default function App() {
@@ -181,6 +206,7 @@ export default function App() {
 
   return (
     <div ref={root} className="exp">
+      <Intro />
       {/* ---------- top bar ---------- */}
       <header className="topbar">
         <div className="topbar-inner">
@@ -203,10 +229,11 @@ export default function App() {
       {/* ---------- 01: POSITION ---------- */}
       <section className="pin-scene scene-position" id="position">
         <div className="bg-canvas" data-scene-tween>
-          <Suspense fallback={null}><LanternScene /></Suspense>
+          <Suspense fallback={null}><Hero3D /></Suspense>
         </div>
         <div className="scene-ink" data-scene-tween />
         <div className="container hero-stack">
+          <div className="hero-signal" aria-hidden="true">VISIBILITY</div>
           <p className="eyebrow rev">An Exposure Systems Firm / 001</p>
           <div className="hero-lines">
             <h1 className="headline">
@@ -222,6 +249,10 @@ export default function App() {
             <a className="cta-big" href={BOOKING_URL}>Start with an Exposure Audit →</a>
             <span className="hero-meta mono">SA · UAE · UK · AU</span>
           </div>
+          <div className="stamp-wrap">
+            <div className="stamp mono"><span className="stamp-rot">× ENGINEERED × VISIBILITY × EXPOSURE</span></div>
+          </div>
+          <div className="scroll-hint mono">scroll ∿ to assemble</div>
           <div className="corner-meta tl">31.2577° S</div>
           <div className="corner-meta br">28.0473° E</div>
         </div>
