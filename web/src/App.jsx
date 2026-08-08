@@ -9,6 +9,82 @@ const Hero3D = lazy(() => import('./three/ParticleLantern.jsx'))
 
 const BOOKING_URL = 'https://cal.com/michaelkidd/exposure-audit'
 
+function CustomCursor() {
+  const dotRef = useRef(null)
+  const ringRef = useRef(null)
+  const labelRef = useRef(null)
+
+  useEffect(() => {
+    let x = 0, y = 0, ringX = 0, ringY = 0, labelX = 0, labelY = 0
+    let raf
+    const onMove = (e) => {
+      x = e.clientX
+      y = e.clientY
+      if (dotRef.current) dotRef.current.style.transform = `translate(${x}px, ${y}px)`
+    }
+    const onOver = (e) => {
+      const t = e.target.closest('a, button')
+      if (t && labelRef.current) {
+        labelRef.current.textContent = 'EXPOSE'
+        labelRef.current.classList.add('show')
+      }
+    }
+    const onLeave = () => {
+      if (labelRef.current) labelRef.current.classList.remove('show')
+    }
+    const loop = () => {
+      ringX += (x - ringX) * 0.18
+      ringY += (y - ringY) * 0.18
+      labelX += (x - labelX) * 0.1
+      labelY += (y - labelY) * 0.1
+      if (ringRef.current) ringRef.current.style.transform = `translate(${ringX}px, ${ringY}px)`
+      if (labelRef.current) labelRef.current.style.transform = `translate(${labelX + 18}px, ${labelY - 18}px)`
+      raf = requestAnimationFrame(loop)
+    }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseover', onOver)
+    window.addEventListener('mouseout', onLeave)
+    raf = requestAnimationFrame(loop)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseover', onOver)
+      window.removeEventListener('mouseout', onLeave)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return (
+    <>
+      <div className="cursor-dot" ref={dotRef} />
+      <div className="cursor-ring" ref={ringRef} />
+      <div className="cursor-label mono" ref={labelRef}>EXPOSE</div>
+    </>
+  )
+}
+
+function RotatingWord({ words }) {
+  const ref = useRef(null)
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      let i = 0
+      const swap = () => {
+        const el = ref.current
+        if (!el) return
+        gsap.to(el, { yPercent: -80, opacity: 0, duration: 0.28, onComplete: () => {
+          i = (i + 1) % words.length
+          el.textContent = words[i]
+          gsap.fromTo(el, { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.42, ease: 'power2.out' })
+        }})
+      }
+      const id = setInterval(swap, 2200)
+      return () => clearInterval(id)
+    }, ref)
+    return () => ctx.revert()
+  }, [words])
+
+  return <span className="rotating-word mono" ref={ref}>{words[0]}</span>
+}
+
 const metrics = [
   { value: 22, suffix: '%', label: 'increase in conversion' },
   { value: 95, suffix: '%', label: 'faster first response' },
@@ -177,6 +253,34 @@ export default function App() {
         scrollTrigger: { trigger: '.compound-scene', start: 'top 70%', once: true },
       })
 
+      // ---------- kinetic skew on major headings ----------
+      gsap.utils.toArray('.reason-line, .journey-title, .final-cta h2').forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 90%',
+          end: 'bottom 10%',
+          onUpdate: (self) => {
+            const vel = self.getVelocity()
+            const skew = Math.max(-8, Math.min(8, vel / 20))
+            gsap.set(el, { skewY: skew, transformOrigin: 'left center' })
+          },
+        })
+      })
+
+      // ---------- horizontal system journey ----------
+      const journey = gsap.to('.journey-track', {
+        xPercent: -55,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.scene-system',
+          start: 'top top',
+          end: '+=160%',
+          scrub: 1,
+          pin: true,
+          invalidateOnRefresh: true,
+        },
+      })
+
       // ---------- generic reveal ----------
       gsap.utils.toArray('.reveal').forEach((el) => {
         gsap.fromTo(el,
@@ -206,6 +310,8 @@ export default function App() {
 
   return (
     <div ref={root} className="exp">
+      <CustomCursor />
+      <div className="scanlines" aria-hidden="true" />
       <Intro />
       {/* ---------- top bar ---------- */}
       <header className="topbar">
@@ -243,7 +349,7 @@ export default function App() {
             </h1>
           </div>
           <p className="hero-meta">
-            Most agencies sell tactics. We build the infrastructure that makes attention compound.
+            Most agencies sell tactics. We build the infrastructure that makes <RotatingWord words={['attention', 'revenue', 'proof', 'growth']} /> compound.
           </p>
           <div className="hero-cta-row">
             <a className="cta-big" href={BOOKING_URL}>Start with an Exposure Audit →</a>
@@ -277,6 +383,28 @@ export default function App() {
                 <span className="frag mono" key={w}>{w}</span>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- 02.5: SYSTEM JOURNEY (horizontal) ---------- */}
+      <section className="scene-system" id="system">
+        <div className="section-tag container reveal"><span>02.5 / The System</span></div>
+        <div className="journey-wrap">
+          <div className="journey-track">
+            {[
+              { k: '01', t: 'POSITION', d: 'Who you are, why it matters, why competitors can\'t copy it.' },
+              { k: '02', t: 'CONTENT', d: 'Built to be found. Built to be redistributed. Not posted once.' },
+              { k: '03', t: 'DISTRIBUTE', d: 'Wired into the channels where your customers already are.' },
+              { k: '04', t: 'AMPLIFY', d: 'Scaled by AI without scaling headcount.' },
+            ].map((s, i) => (
+              <div className="journey-node" key={s.k}>
+                <div className="journey-index mono">{s.k}</div>
+                <h3 className="journey-title">{s.t}</h3>
+                <p className="journey-desc">{s.d}</p>
+                {i < 3 && <span className="journey-connector mono">→</span>}
+              </div>
+            ))}
           </div>
         </div>
       </section>

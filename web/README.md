@@ -8,7 +8,12 @@ The site is the proof: as you scroll, the page executes Position → Content →
 - **Vite** + **React**
 - **GSAP** + ScrollTrigger — scroll-driven animation and word-scramble effects
 - **Lenis** — buttery smooth scrolling
-- **Three.js** — interactive 3D lantern core, orbital rings, shards, lens rays, particle field
+- **Three.js** — 4,500-particle chaos→order system that assembles into a lantern constellation as you scroll and move
+- **Custom cursor** — amber signal dot + ring + EXPOSE label on hover
+- **Horizontal pinned journey** — POSITION → CONTENT → DISTRIBUTE → AMPLIFY scrolls sideways
+- **Kinetic skew** — major headings skew with scroll velocity
+- **Scanlines** — CRT/machine texture overlay
+- **Rotating words** — attention/revenue/proof/growth cycle in hero
 - Google Fonts: Inter + JetBrains Mono
 
 ## Run locally
@@ -53,6 +58,7 @@ Output lands in `web/dist/`.
 - Copy / scenes: `src/App.jsx`
 - Styling: `src/styles.css`
 - 3D scene: `src/three/ParticleLantern.jsx`
+- Creative components in `src/App.jsx`
 - Booking link: `BOOKING_URL` constant in `src/App.jsx` (currently `https://cal.com/michaelkidd/exposure-audit`)
 
 ## Notes
