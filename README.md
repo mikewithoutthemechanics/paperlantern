@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Paperlantern
 
-## Getting Started
+![Repo size](https://img.shields.io/github/repo-size/mikewithoutthemechanics/paperlantern)
+![License](https://img.shields.io/github/license/mikewithoutthemechanics/paperlantern)
+![Top language](https://img.shields.io/github/languages/top/mikewithoutthemechanics/paperlantern)
 
-First, run the development server:
+## 👋 Hi, I'm Michael
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is one of my projects. Here's what it's about, why it exists, and how you can use it.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 What it does
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+A project built by Michael. See the source for details.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 The goal it fills
 
-## Learn More
+This project exists to solve a specific need and make a particular task simpler. Whether it's automating a workflow, serving a website, or powering a tool, the goal is to be practical, usable, and straightforward.
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 How to use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Get the code**
+   ```bash
+   git clone https://github.com/mikewithoutthemechanics/paperlantern.git
+   cd paperlantern
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Run it**
+   See the available commands below and pick the one you need.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Available commands
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| `npm run dev` | next dev |
+| `npm run build` | next build |
+| `npm run start` | next start |
+| `npm run lint` | eslint |
+
+## 🛠️ Tech stack
+
+react, next, typescript, tailwindcss
+
+## 💡 Why it matters
+
+This project is built to be useful and easy to pick up. If you're looking for a tool that does paperlantern, this is a clean, maintainable starting point you can adapt to your own needs.
+
+## 📄 License
+
+MIT
+
+---
+
+Made with ❤️ by Michael

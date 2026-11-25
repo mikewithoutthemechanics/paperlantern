@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paperlantern.xyz — The Lantern Edition | Digital Craft, Reborn</title>
+<meta name="description" content="Paperlantern.xyz — Cape Town digital agency. Strategy, Branding, Web, Commerce, Marketing, SEO, AI & Automation. A new world of digital craft.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { cream:'#EDE9DC', cream2:'#E4DECE', ink:'#0E0E0E', ember:'#FF5A1F', ember2:'#FF8A5C', gold:'#C9A86A', moss:'#1A241C' },
+    fontFamily: { sans:['Inter Tight','sans-serif'], serif:['Cormorant Garamond','serif'], mono:['JetBrains Mono','monospace'] }
+  }}
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{--cream:#EDE9DC;--ink:#0E0E0E;--ember:#FF5A1F;--line:rgba(20,20,20,.14)}
+*{ -webkit-tap-highlight-color:transparent; }
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'Inter Tight',sans-serif;overflow-x:hidden}
+::selection{background:#FF5A1F;color:#fff}
+.serif-it{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;letter-spacing:-.02em}
+.giant{font-weight:900;letter-spacing:-.06em;line-height:.85;text-transform:none}
+.grain{position:fixed;inset:0;z-index:120;pointer-events:none;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#progress{position:fixed;top:0;left:0;height:3px;background:#FF5A1F;z-index:200;width:0}
+#cursor-dot,#cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:300;border-radius:50%}
+#cursor-dot{width:8px;height:8px;background:#FF5A1F;transform:translate(-50%,-50%)}
+#cursor-ring{width:36px;height:36px;border:1px solid rgba(255,90,31,.7);transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s}
+#cursor-ring.hovering{width:64px;height:64px;background:rgba(255,90,31,.12)}
+@media(hover:none){#cursor-dot,#cursor-ring{display:none}}
+.sidebar-link{position:relative;display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11.5px;font-weight:600;letter-spacing:.02em;opacity:.55;transition:.25s}
+.sidebar-link:hover,.sidebar-link.active{opacity:1;transform:translateX(4px)}
+.sidebar-link.active::before{content:'';position:absolute;left:-14px;top:50%;width:6px;height:6px;background:#FF5A1F;transform:translateY(-50%) rotate(45deg)}
+.hero-box{border:1px solid rgba(255,255,255,.75);backdrop-filter:blur(6px);background:rgba(10,15,25,.18)}
+.chapter-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em}
+.card{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:18px;box-shadow:0 20px 50px -20px rgba(0,0,0,.18);transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.card:hover{transform:translateY(-6px);box-shadow:0 30px 70px -20px rgba(0,0,0,.28)}
+.btn-ember{background:#FF5A1F;color:#fff;border-radius:999px;font-weight:700;transition:.3s;box-shadow:0 10px 30px -8px rgba(255,90,31,.6)}
+.btn-ember:hover{transform:translateY(-2px) scale(1.02);background:#0E0E0E;box-shadow:0 15px 40px -10px rgba(0,0,0,.5)}
+.btn-ghost{border:1px solid rgba(0,0,0,.2);border-radius:999px;font-weight:600;transition:.3s}
+.btn-ghost:hover{background:#0E0E0E;color:#fff;border-color:#0E0E0E}
+.marquee{overflow:hidden;white-space:nowrap}
+.marquee-track{display:inline-flex;gap:0;animation:marq 22s linear infinite}
+@keyframes marq{to{transform:translateX(-50%)}}
+.float-a{animation:floatA 6s ease-in-out infinite}
+.float-b{animation:floatB 7.5s ease-in-out infinite}
+@keyframes floatA{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-18px) rotate(1deg)}}
+@keyframes floatB{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-24px) rotate(-1deg)}}
+.glow-lantern{background:linear-gradient(135deg,#FF5A1F,#FFB03B 60%,#C63B00);box-shadow:0 0 34px rgba(255,120,40,.85),inset 0 0 20px rgba(255,255,255,.35)}
+.paper-tag{background:#FFE3C2;border:2px solid #111;box-shadow:5px 5px 0 #111}
+.chat-bubble{max-width:85%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.5}
+.typing span{width:6px;height:6px;background:#999;border-radius:50%;display:inline-block;animation:blink 1s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.reveal{opacity:0;transform:translateY(40px)}
+.phone{border:9px solid #111;border-radius:36px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -20px rgba(0,0,0,.4)}
+.browser{border:1px solid rgba(0,0,0,.12);border-radius:14px;overflow:hidden;background:#fff}
+.dot{width:9px;height:9px;border-radius:50%}
+input,textarea,select{outline:none}
+input:focus,textarea:focus{border-color:#FF5A1F!important;box-shadow:0 0 0 3px rgba(255,90,31,.15)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.8,.2,1)}
+.faq-item.open .faq-a{max-height:300px}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-icon{transition:.3s}
+.ab-handle{cursor:ew-resize}
+#loader{position:fixed;inset:0;background:#050505;z-index:500;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.loader-line{height:1px;background:rgba(255,255,255,.35);position:absolute}
+.tilt{transform-style:preserve-3d;perspective:1000px}
+.billboard{box-shadow:0 40px 80px -20px rgba(0,0,0,.6);border:6px solid #111}
+.chip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:#111;color:#fff;padding:5px 10px;border-radius:999px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);transition:.5s cubic-bezier(.2,.8,.2,1);z-index:250}
+.toast.show{transform:translate(-50%,0)}
+.video-glow{box-shadow:0 0 0 1px rgba(255,255,255,.15),0 30px 100px -20px rgba(0,0,0,.8)}
+.stat-bar{height:6px;background:rgba(0,0,0,.08);border-radius:99px;overflow:hidden}
+.stat-fill{height:100%;background:#111;border-radius:99px;width:0}
+@media(max-width:1023px){#sidebar{display:none}}
+</style>
+</head>
+<body class="antialiased">
+<div id="progress"></div>
+<div class="grain"></div>
+<div id="cursor-dot"></div><div id="cursor-ring"></div>
+
+<!-- PRELOADER -->
+<div id="loader">
+  <div class="loader-line" id="ll1" style="top:22%;left:10%;width:0"></div>
+  <div class="loader-line" id="ll2" style="top:78%;right:10%;width:0"></div>
+  <div class="loader-line vertical" id="ll3" style="left:50%;top:0;height:0;width:1px"></div>
+  <div class="text-center px-6">
+    <p class="text-white/50 font-mono text-[11px] tracking-[.3em] mb-4">PAPERLANTERN.XYZ PRESENTS</p>
+    <h1 id="loader-title" class="text-white font-black leading-[.9] tracking-tight" style="font-size:clamp(2rem,6vw,4.5rem)">The<br><span class="serif-it font-medium">Paper//lantern</span><br>Edition</h1>
+    <p class="text-white/60 text-sm mt-4 font-mono">loading renaissance — 00%</p>
+  </div>
+</div>
+
+<!-- SIDEBAR DESKTOP -->
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-[212px] bg-[#EDE9DC] border-r border-black/10 z-[100] hidden lg:flex flex-col justify-between p-5">
+  <div>
+    <a href="#hero" class="block leading-[1.05]">
+      <span class="text-[13px] font-extrabold tracking-tight">The<br>Paperlantern<br><span class="serif-it font-medium">Glow</span><br>Edition</span>
+      <span class="block mt-2 text-[10px] font-mono text-black/50">WINTER '26 — CPT</span>
+    </a>
+    <nav id="sideNav" class="mt-8 space-y-[2px]">
+      <a href="#strategy" class="sidebar-link"><span>Strategy</span><span class="font-mono opacity-60">I</span></a>
+      <a href="#branding" class="sidebar-link"><span>Branding</span><span class="font-mono opacity-60">II</span></a>
+      <a href="#web" class="sidebar-link"><span>Web Design</span><span class="font-mono opacity-60">III</span></a>
+      <a href="#commerce" class="sidebar-link"><span>Commerce</span><span class="font-mono opacity-60">IV</span></a>
+      <a href="#marketing" class="sidebar-link"><span>Marketing</span><span class="font-mono opacity-60">V</span></a>
+      <a href="#content" class="sidebar-link"><span>Content & SEO</span><span class="font-mono opacity-60">VI</span></a>
+      <a href="#ai" class="sidebar-link"><span>AI Automation</span><span class="font-mono opacity-60">VII</span></a>
+      <a href="#care" class="sidebar-link"><span>Care & Growth</span><span class="font-mono opacity-60">VIII</span></a>
+      <a href="#contact" class="sidebar-link"><span>Start Project</span><span class="font-mono opacity-60">IX</span></a>
+    </nav>
+  </div>
+  <div>
+    <div class="bg-black text-white rounded-xl p-3 mb-3">
+      <p class="text-[11px] font-bold">Need a quote in 24h?</p>
+      <a href="#contact" class="btn-ember inline-block text-[11px] px-3 py-1.5 mt-2">Get proposal <i class="fa-solid fa-arrow-right ml-1"></i></a>
+    </div>
+    <p class="text-[10px] font-mono text-black/50 leading-relaxed">44 Long St, Cape Town<br>hello@paperlantern.xyz<br>+27 21 418 3320</p>
+  </div>
+</aside>
+
+<!-- MOBILE TOPBAR -->
+<header class="lg:hidden fixed top-0 left-0 right-0 z-[110] bg-[#EDE9DC]/90 backdrop-blur-md border-b border-black/10 px-4 py-3 flex items-center justify-between">
+  <a href="#hero" class="font-extrabold text-[14px] leading-none">Paperlantern<br><span class="serif-it font-medium">The Glow</span> Edition</a>
+  <div class="flex items-center gap-2">
+    <a href="#contact" class="btn-ember text-[12px] px-4 py-2">Start project</a>
+    <button id="menuBtn" class="w-10 h-10 rounded-full border border-black/20 flex flex-col items-center justify-center gap-[5px] bg-white"><span class="w-5 h-[2px] bg-black block"></span><span class="w-5 h-[2px] bg-black block"></span></button>
+  </div>
+</header>
+<div id="mobileMenu" class="fixed inset-0 z-[105] bg-[#0E0E0E] text-white hidden flex-col justify-center px-8 pt-16">
+  <button id="menuClose" class="absolute top-4 right-4 w-11 h-11 rounded-full border border-white/30 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+  <p class="font-mono text-[11px] tracking-[.25em] text-white/50 mb-4">PAPERLANTERN.XYZ — MENU</p>
+  <nav class="space-y-1 text-4xl font-black tracking-tight">
+    <a href="#strategy" class="block hover:text-[#FF5A1F]">Strategy</a>
+    <a href="#branding" class="block hover:text-[#FF5A1F]">Branding</a>
+    <a href="#web" class="block hover:text-[#FF5A1F]">Web Design</a>
+    <a href="#commerce" class="block hover:text-[#FF5A1F]">Commerce</a>
+    <a href="#marketing" class="block hover:text-[#FF5A1F]">Marketing</a>
+    <a href="#ai" class="block hover:text-[#FF5A1F]">AI Automation</a>
+    <a href="#contact" class="block serif-it font-medium text-[#FF8A5C]">Start a project →</a>
+  </nav>
+  <p class="mt-8 text-white/60 text-sm">hello@paperlantern.xyz • +27 21 418 3320</p>
+</div>
+
+<main class="lg:ml-[212px] pt-[64px] lg:pt-0">
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen overflow-hidden bg-[#0A1120] text-white flex items-center justify-center">
+  <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=2000&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-70" id="heroBg">
+  <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0A1120]/90"></div>
+  <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2000&auto=format&fit=crop" alt="" class="absolute bottom-0 w-full h-[38%] object-cover opacity-50" style="mask-image:linear-gradient(to top,black,transparent)">
+  <!-- floating figures -->
+  <div class="absolute left-[2%] md:left-[7%] top-[18%] w-[42vw] max-w-[420px] float-a z-[2]" id="figL">
+    <div class="relative">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=800&auto=format&fit=crop" class="w-full h-[52vh] object-cover rounded-[8px] sepia-[.25] contrast-110 brightness-105" style="clip-path:polygon(5% 0,100% 4%,96% 92%,0 100%);box-shadow:0 40px 80px rgba(0,0,0,.6)" alt="Muse left">
+      <div class="absolute -left-3 top-1/3 glow-lantern w-10 h-14 rounded-sm rotate-[-12deg] flex items-center justify-center text-white text-xl">🏮</div>
+      <div class="absolute bottom-6 -left-4 paper-tag px-3 py-1 rotate-[-18deg] rounded-full"><span class="font-black text-[13px] text-black tracking-tight" style="font-family:'Inter Tight'">PAPERLANTERN † GLOW</span></div>
+    </div>
+  </div>
+  <div class="absolute right-[2%] md:right-[7%] top-[22%] w-[42vw] max-w-[430px] float-b z-[2]" id="figR">
+    <div class="relative">
+      <img src="https://images.unsplash.com/photo-1509942772063-acf970d6d39b?q=80&w=800&auto=format&fit=crop" class="w-full h-[54vh] object-cover rounded-[8px] sepia-[.2] contrast-110" style="clip-path:polygon(0 3%,95% 0,100% 100%,4% 94%);box-shadow:0 40px 80px rgba(0,0,0,.6)" alt="Muse right">
+      <div class="absolute right-6 top-10 glow-lantern w-14 h-[70px] rounded-[4px] rotate-[10deg] flex flex-col items-center justify-center"><span class="text-white font-black text-[9px] tracking-widest">PAPERLANTERN</span><span class="text-white/80 text-[18px]">✦</span></div>
+      <div class="absolute -bottom-4 right-8 bg-[#FFE3C2] border-2 border-black px-2 py-1 rounded-full rotate-[8deg] shadow-[4px_4px_0_#111]"><span class="text-[11px] font-black text-black">★ NEW DROP CPT</span></div>
+    </div>
+  </div>
+
+  <!-- center box -->
+  <div class="relative z-[5] mx-4 md:mx-auto max-w-[520px] hero-box p-6 md:p-8 mt-24 md:mt-10" id="heroBox">
+    <p class="font-mono text-[10px] tracking-[.25em] text-white/70 mb-3">● PAPERLANTERN.XYZ — WINTER '26 EDITION</p>
+    <h1 class="font-black leading-[.88] tracking-tight" style="font-size:clamp(2.4rem,6vw,3.8rem)">The<br>Paper//lantern<br><span class="serif-it font-medium">Glow</span><br>Edition</h1>
+    <p class="mt-4 text-white/85 text-[14px] leading-relaxed">A new world of digital craft.<br>40+ capabilities, one obsession — growth.</p>
+    <div class="grid grid-cols-2 gap-4 mt-6 text-[12.5px] font-semibold">
+      <div class="space-y-1">
+        <p>Strategy</p><p>Branding</p><p>Web Design</p><p>Commerce</p><p>Marketing</p><p>Content & SEO</p><p>AI Automation</p><p>Care Plans</p>
+      </div>
+      <div class="space-y-1 text-right font-mono text-white/70">
+        <p>I</p><p>II</p><p>III</p><p>IV</p><p>V</p><p>VI</p><p>VII</p><p>VIII</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-3 mt-6">
+      <a href="#contact" class="btn-ember px-6 py-3 text-sm magnetic">Start your project <i class="fa-solid fa-arrow-right ml-1"></i></a>
+      <button id="showreelBtn" class="px-6 py-3 text-sm rounded-full border border-white/40 font-semibold hover:bg-white hover:text-black transition magnetic"><i class="fa-solid fa-play mr-2"></i> Showreel ’26</button>
+    </div>
+    <p class="mt-4 font-mono text-[10px] text-white/60">★ TRUSTED BY 240+ SA BRANDS • ★★★★★ 4.9 ON GOOGLE</p>
+  </div>
+
+  <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-[6] flex flex-col items-center gap-2 text-white/70">
+    <span class="font-mono text-[10px] tracking-[.3em]">SCROLL TO EXPLORE</span>
+    <span class="w-[1px] h-10 bg-white/50 overflow-hidden relative"><span id="scrollLine" class="absolute top-0 left-0 w-full h-1/2 bg-[#FF5A1F]"></span></span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="bg-black text-white py-3 marquee border-y border-white/10">
+  <div class="marquee-track font-black text-[15px] tracking-tight">
+    <span class="px-4">PAPERLANTERN.XYZ ✦ GLOW EDITION ✦ STRATEGY ✦ BRANDING ✦ WEB ✦ COMMERCE ✦ MARKETING ✦ SEO ✦ AI AUTOMATION ✦ CAPE TOWN ✦ JHB ✦&nbsp;</span>
+    <span class="px-4">PAPERLANTERN.XYZ ✦ GLOW EDITION ✦ STRATEGY ✦ BRANDING ✦ WEB ✦ COMMERCE ✦ MARKETING ✦ SEO ✦ AI AUTOMATION ✦ CAPE TOWN ✦ JHB ✦&nbsp;</span>
+  </div>
+</div>
+
+<!-- I STRATEGY -->
+<section id="strategy" class="scroll-mt-10">
+  <div class="relative min-h-[82vh] bg-[#0B0F1E] text-white overflow-hidden flex items-end">
+    <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F1E] via-transparent to-black/40"></div>
+    <div class="absolute right-[8%] top-[16%] w-[280px] hidden md:block float-a"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" class="rounded-full w-56 h-56 object-cover border border-white/20 mx-auto" alt=""><div class="text-center mt-3"><span class="chip">✦ Muse of Insight</span></div></div>
+    <div class="relative p-6 md:p-14 max-w-6xl">
+      <p class="chapter-num text-white/60">CHAPTER I — STRATEGY & SIDEKICK AI</p>
+      <h2 class="giant mt-2" style="font-size:clamp(3.5rem,12vw,9.5rem)">Strategy</h2>
+      <p class="serif-it text-[clamp(1.4rem,3.5vw,2.6rem)] leading-tight max-w-2xl -mt-2">Clarity before creativity. The AI-powered partner obsessed with your growth as you are.</p>
+      <div class="flex gap-3 mt-6"><button onclick="document.getElementById('chatDemo').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-6 py-3 rounded-full font-bold text-sm hover:bg-[#FF5A1F] hover:text-white transition">Try live strategy AI ↓</button><span class="chip !bg-white/10 border border-white/20">Discovery • Positioning • Roadmaps</span></div>
+    </div>
+  </div>
+  <div class="bg-[#EDE9DC] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="card p-6 reveal"><p class="font-mono text-[11px] text-black/50">● LIVE PULSE</p><h3 class="serif-it text-3xl mt-2">Insights, proactively delivered</h3><p class="text-sm text-black/70 mt-2">We plug into GA4, Meta, Shopify & Search Console. You get plain-English next steps every Monday.</p><div class="mt-4 bg-[#F6F3E8] rounded-xl p-4 border"><div class="flex justify-between text-[12px] font-bold"><span>Revenue pulse</span><span class="text-green-700">▲ +38%</span></div><canvas id="pulseChart" height="90" class="w-full mt-2"></canvas><p class="font-mono text-[10px] mt-1 opacity-60">R1 289 457 THIS QUARTER — PAPERLANTERN TRACKED</p></div><button class="btn-ghost px-4 py-2 text-[12px] mt-4 w-full" onclick="toast('Pulse report sent to demo@paperlantern.xyz')">Explore your Pulse →</button></div>
+        <div class="card p-6 reveal"><p class="font-mono text-[11px] text-black/50">COMPLEXITY, DELEGATED</p><h3 class="font-extrabold text-xl mt-2">Research, audits & roadmaps done-for-you</h3><p class="text-sm text-black/70 mt-2">Competitor teardowns, keyword universes, UX audits — delivered in Notion + Loom in 7 days.</p><div class="mt-4 space-y-2"><div class="bg-[#EDE9DC] rounded-lg p-3 text-[12px] font-semibold flex justify-between">Full-funnel audit <span class="bg-black text-white px-2 rounded-full text-[10px] py-[2px]">DONE ✓</span></div><div class="bg-[#EDE9DC] rounded-lg p-3 text-[12px] font-semibold flex justify-between">90-day growth map <span class="bg-[#FF5A1F] text-white px-2 rounded-full text-[10px] py-[2px]">IN PROGRESS</span></div><div class="stat-bar mt-3"><div class="stat-fill" data-w="78%"></div></div></div><a href="#contact" class="text-[12px] font-bold underline mt-4 inline-block">Get free mini-audit →</a></div>
+        <div class="card p-6 reveal bg-[#111] !text-white !border-black"><p class="font-mono text-[11px] text-white/50">PAPERLANTERN SIDEKICK — LIVE DEMO</p><h3 class="font-extrabold text-xl mt-2">Ask anything. Seriously.</h3><div id="chatDemo" class="mt-3 bg-white/10 rounded-xl p-3 h-[240px] overflow-y-auto space-y-2 text-left"><div class="chat-bubble bg-white text-black">Hey, I'm <b>Sidekick by Paperlantern</b> — should you rebrand, run ads, or rebuild? Ask me 👇</div></div><div class="flex flex-wrap gap-2 mt-2"><button class="chat-pill text-[11px] bg-white/15 px-3 py-1 rounded-full hover:bg-[#FF5A1F]" data-q="How much does a website cost in South Africa?">Pricing?</button><button class="chat-pill text-[11px] bg-white/15 px-3 py-1 rounded-full hover:bg-[#FF5A1F]" data-q="How long does SEO take?">SEO timeline?</button><button class="chat-pill text-[11px] bg-white/15 px-3 py-1 rounded-full hover:bg-[#FF5A1F]" data-q="Do you work with Shopify?">Shopify?</button></div><div class="flex gap-2 mt-2"><input id="chatInput" placeholder="Type your business question..." class="flex-1 bg-white text-black rounded-full px-4 py-2 text-[13px] border"><button id="chatSend" class="btn-ember w-10 h-10 rounded-full shrink-0"><i class="fa-solid fa-arrow-up"></i></button></div></div>
+      </div>
+      <div class="grid md:grid-cols-4 gap-4 mt-10 text-center">
+        <div class="reveal"><p class="font-black text-4xl counter" data-target="240">0</p><p class="font-mono text-[11px] opacity-60">BRANDS LAUNCHED</p></div>
+        <div class="reveal"><p class="font-black text-4xl"><span class="counter" data-target="120">0</span>M+</p><p class="font-mono text-[11px] opacity-60">CLIENT REVENUE (RAND)</p></div>
+        <div class="reveal"><p class="font-black text-4xl"><span class="counter" data-target="98">0</span>%</p><p class="font-mono text-[11px] opacity-60">RETENTION RATE</p></div>
+        <div class="reveal"><p class="font-black text-4xl"><span class="counter" data-target="14">0</span> yrs</p><p class="font-mono text-[11px] opacity-60">CRAFTING IN SA</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- II BRANDING -->
+<section id="branding" class="scroll-mt-10">
+  <div class="relative min-h-[80vh] bg-[#1A0F0F] text-white overflow-hidden flex items-end">
+    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+    <div class="absolute left-1/2 top-[10%] -translate-x-1/2 flex gap-4 opacity-90"><div class="w-14 h-20 bg-white rounded-sm rotate-[-8deg] shadow-xl flex items-center justify-center text-black font-black">P</div><div class="w-14 h-20 bg-[#FF5A1F] rounded-sm rotate-[6deg] shadow-xl flex items-center justify-center text-white font-black">l</div><div class="w-14 h-20 bg-white rounded-sm rotate-[-4deg] shadow-xl hidden sm:flex items-center justify-center text-black font-black">©</div></div>
+    <div class="relative p-6 md:p-14"><p class="chapter-num text-white/60">CHAPTER II — BRANDING & IDENTITY</p><h2 class="giant" style="font-size:clamp(3.5rem,12vw,9.5rem)">Branding</h2><p class="serif-it text-[clamp(1.4rem,3.5vw,2.5rem)] max-w-2xl">Be unforgettable in every feed, shelf and street.</p></div>
+  </div>
+  <div class="bg-[#E4DECE] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6">
+      <div class="browser reveal"><div class="flex items-center gap-1.5 px-4 py-3 border-b bg-[#F7F4E9]"><span class="dot bg-red-400"></span><span class="dot bg-yellow-400"></span><span class="dot bg-green-400"></span><span class="ml-3 font-mono text-[11px] opacity-60">paperlantern.xyz / brand-system — WICK & WAX STUDIO CPT</span></div><div class="p-6"><div class="flex items-center justify-between"><h4 class="font-black text-3xl tracking-tight">WICK<span class="text-[#FF5A1F]">®</span> studio</h4><span class="chip">Logo v4.2</span></div><div class="grid grid-cols-3 gap-3 mt-5"><div class="h-24 rounded-lg bg-black text-white flex items-center justify-center font-black text-xl">Aa</div><div class="h-24 rounded-lg bg-[#FF5A1F] text-white flex items-center justify-center font-black">#FF5A1F</div><div class="h-24 rounded-lg bg-white border flex items-center justify-center"><span class="serif-it text-2xl">Wick</span></div></div><p class="text-[13px] mt-4 text-black/70">Full system: logo, voice, packaging, motion, merch. From R18 500 — delivered in 3 weeks with brand bible + Canva kit.</p><div class="flex gap-2 mt-4"><button class="btn-ember px-5 py-2 text-[12px]" onclick="toast('Brand case study PDF sent — check inbox')">View case study</button><button class="btn-ghost px-5 py-2 text-[12px]">Book brand sprint</button></div></div></div>
+      <div class="space-y-5">
+        <div class="card p-6 reveal"><h4 class="font-extrabold">What's inside every rebrand?</h4><ul class="mt-3 space-y-2 text-[13.5px]"><li class="flex gap-2"><i class="fa-solid fa-check text-[#FF5A1F] mt-1"></i> Strategy workshop + naming + tagline (Yebo, now you’re talking)</li><li class="flex gap-2"><i class="fa-solid fa-check text-[#FF5A1F] mt-1"></i> Logo suite, colours, type, icons, patterns</li><li class="flex gap-2"><i class="fa-solid fa-check text-[#FF5A1F] mt-1"></i> Social templates, packaging mockups, signage</li><li class="flex gap-2"><i class="fa-solid fa-check text-[#FF5A1F] mt-1"></i> Brand guidelines site — not a dusty PDF</li></ul></div>
+        <div class="grid grid-cols-2 gap-4"><div class="card p-4 reveal text-center"><p class="font-black text-2xl">3 wks</p><p class="text-[12px] opacity-70">average delivery</p></div><div class="card p-4 reveal text-center"><p class="font-black text-2xl">+64%</p><p class="text-[12px] opacity-70">avg. brand recall lift</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- III WEB -->
+<section id="web" class="scroll-mt-10">
+  <div class="relative min-h-[80vh] overflow-hidden bg-[#2B0E1E] text-white flex items-end">
+    <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+    <div class="relative p-6 md:p-14 w-full"><p class="chapter-num text-white/60">CHAPTER III — WEB DESIGN & BUILD</p><h2 class="giant" style="font-size:clamp(3.8rem,14vw,11rem)">Online</h2><p class="serif-it text-[clamp(1.4rem,3.5vw,2.5rem)] max-w-2xl">Validate every pixel with data. Launch without fear.</p></div>
+  </div>
+  <div class="bg-[#EDE9DC] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto reveal"><h3 class="serif-it text-4xl">Designs, refined — live.</h3><p class="text-sm text-black/70 mt-2">Try our live theme editor. Type, pick a colour, watch the site update — just like working with us.</p></div>
+      <div class="grid lg:grid-cols-[320px_1fr] gap-6 mt-8">
+        <div class="card p-6 reveal">
+          <p class="font-mono text-[11px] opacity-60">THEME EDITOR — PAPERLANTERN OS</p>
+          <label class="text-[12px] font-bold mt-4 block">Headline</label>
+          <input id="headlineInput" value="LIGHT UP YOUR BRAND" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
+          <label class="text-[12px] font-bold mt-4 block">Vibe / colour</label>
+          <div class="flex gap-2 mt-2" id="swatches"><button data-c="#0E0E0E" class="w-9 h-9 rounded-full border-2 border-black" style="background:#0E0E0E"></button><button data-c="#FF5A1F" class="w-9 h-9 rounded-full border" style="background:#FF5A1F"></button><button data-c="#0A4D3A" class="w-9 h-9 rounded-full border" style="background:#0A4D3A"></button><button data-c="#1E3AFF" class="w-9 h-9 rounded-full border" style="background:#1E3AFF"></button><button data-c="#E8A317" class="w-9 h-9 rounded-full border" style="background:#E8A317"></button></div>
+          <label class="text-[12px] font-bold mt-4 block">Layout</label>
+          <div class="grid grid-cols-2 gap-2 mt-2"><button id="layoutA" class="btn-ghost py-2 text-[12px] !bg-black !text-white">Bold hero</button><button id="layoutB" class="btn-ghost py-2 text-[12px]">Split</button></div>
+          <div class="mt-5 bg-black text-white rounded-xl p-4 text-[12px]"><p class="font-bold">⚡ SimGym score: <span id="simScore" class="text-[#7CFF9B]">92/100</span></p><p class="opacity-70 mt-1">AI predicts +27% conversion vs your old site. Based on 2.1M SA sessions.</p></div>
+        </div>
+        <div class="browser reveal overflow-hidden">
+          <div class="flex items-center gap-1.5 px-4 py-3 border-b bg-white"><span class="dot bg-red-400"></span><span class="dot bg-yellow-400"></span><span class="dot bg-green-400"></span><span class="ml-2 bg-black/5 rounded-full px-3 py-1 font-mono text-[11px]">wick-and-wax.co.za — preview</span><span class="ml-auto chip">Live</span></div>
+          <div id="livePreview" class="relative h-[420px] flex flex-col justify-center items-center text-center p-8 transition-colors duration-500" style="background:#0E0E0E;color:#fff">
+            <p class="font-mono text-[10px] tracking-[.25em] opacity-70">NEW DROP — CAPE TOWN</p>
+            <h4 id="previewHeadline" class="font-black leading-[.9] mt-2" style="font-size:clamp(2rem,5vw,3.8rem)">LIGHT UP<br>YOUR BRAND</h4>
+            <div class="flex gap-3 mt-5"><span class="bg-white text-black px-6 py-2 rounded-full font-bold text-[13px]">Shop now</span><span class="border border-white/40 px-6 py-2 rounded-full text-[13px]">Lookbook</span></div>
+            <img src="https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=800&auto=format&fit=crop" class="absolute bottom-4 right-4 w-28 h-28 object-cover rounded-xl border-2 border-white/30 rotate-6" alt="">
+            <img src="https://images.unsplash.com/photo-1608181831718-c9ffd8728e94?q=80&w=400&auto=format&fit=crop" class="absolute top-4 left-4 w-20 h-20 object-cover rounded-full border-2 border-white/30 -rotate-6" alt="">
+          </div>
+          <div class="p-4 bg-[#F7F4E9] border-t">
+            <p class="font-mono text-[11px] mb-2">A/B SLIDER — DRAG TO COMPARE OLD vs NEW</p>
+            <div id="abWrap" class="relative h-28 rounded-xl overflow-hidden border select-none">
+              <div class="absolute inset-0 bg-[#D8D2BD] flex items-center justify-center"><span class="font-black text-black/30 text-2xl">OLD SITE — 1.2% CONVERTS</span></div>
+              <div id="abTop" class="absolute inset-0 bg-black text-white flex items-center justify-center overflow-hidden" style="width:55%"><span class="font-black text-2xl whitespace-nowrap px-4">NEW SITE — 3.8% CONVERTS ✦</span></div>
+              <div id="abHandle" class="ab-handle absolute top-0 bottom-0 w-[3px] bg-[#FF5A1F]" style="left:55%"><span class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-[#FF5A1F] rounded-full flex items-center justify-center text-white text-sm border-2 border-white">↔</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IV COMMERCE -->
+<section id="commerce" class="scroll-mt-10">
+  <div class="relative min-h-[82vh] bg-[#151310] text-white overflow-hidden flex items-end">
+    <img src="https://images.unsplash.com/photo-1555848962-6e79363ec58f?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-55 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/50"></div>
+    <div class="relative p-6 md:p-14"><p class="chapter-num text-white/60">CHAPTER IV — E-COMMERCE & RETAIL</p><h2 class="giant" style="font-size:clamp(3.5rem,12vw,9.5rem)">Commerce</h2><p class="serif-it text-[clamp(1.4rem,3.5vw,2.5rem)] max-w-2xl">Checkout that never drops. Stores that sell while you sleep.</p></div>
+  </div>
+  <div class="bg-[#EDE9DC] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-6">
+      <div>
+        <div class="flex items-center justify-between mb-4"><h3 class="font-extrabold text-2xl">The Paperlantern Shelf <span class="font-mono text-[11px] font-normal opacity-60">— add to cart, go on, try it</span></h3><button id="cartOpen" class="btn-ghost px-5 py-2 text-[13px] relative">🛒 Cart <span id="cartCount" class="absolute -top-2 -right-2 bg-[#FF5A1F] text-white w-6 h-6 rounded-full text-[11px] flex items-center justify-center font-bold">0</span></button></div>
+        <div class="grid sm:grid-cols-3 gap-4" id="productGrid"></div>
+        <div class="grid md:grid-cols-3 gap-4 mt-6">
+          <div class="card p-5 reveal"><i class="fa-brands fa-shopify text-2xl"></i><h4 class="font-bold mt-2 text-[14px]">Shopify & Woo builds</h4><p class="text-[12.5px] opacity-70 mt-1">Lightning themes, Yoco / Payfast / SnapScan, 2048 variants, local pickup.</p></div>
+          <div class="card p-5 reveal"><i class="fa-solid fa-bolt text-2xl"></i><h4 class="font-bold mt-2 text-[14px]">1.1s load time promise</h4><p class="text-[12.5px] opacity-70 mt-1">If we don't hit sub-2s on 4G in SA, we work free till we do.</p></div>
+          <div class="card p-5 reveal"><i class="fa-solid fa-cash-register text-2xl"></i><h4 class="font-bold mt-2 text-[14px]">POS + in-store</h4><p class="text-[12.5px] opacity-70 mt-1">We wire Shopify POS, scanners & receipts for Long St flagships.</p></div>
+        </div>
+      </div>
+      <div class="card p-6 reveal h-fit lg:sticky lg:top-6"><h4 class="font-extrabold">Checkout preview</h4><div class="mt-3 border rounded-xl p-4 bg-[#F7F4E9]"><div class="flex justify-between text-[12px] font-bold"><span>Ember Trio Set</span><span>R1 899</span></div><div class="flex justify-between text-[12px] mt-1 opacity-70"><span>Shipping (CPT)</span><span>R120</span></div><div class="border-t mt-3 pt-2 flex justify-between font-black"><span>Total</span><span id="miniTotal">R2 019</span></div><button class="w-full mt-3 bg-[#5A31F4] text-white rounded-lg py-2.5 font-bold text-[13px]">Buy with <span class="italic">shop</span> Pay</button><button class="w-full mt-2 bg-black text-white rounded-lg py-2.5 font-bold text-[13px]" onclick="toast('Yoco checkout would open here — demo mode')">Pay with Yoco →</button><p class="text-center font-mono text-[10px] mt-2 opacity-60">APPLE PAY • KLARNA • M-PESA READY</p></div><p class="text-[12px] mt-3 opacity-70">Avg. uplift after our checkout rebuild: <b>+31% completed payments.</b></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- V MARKETING -->
+<section id="marketing" class="scroll-mt-10">
+  <div class="relative min-h-[80vh] overflow-hidden text-white flex items-end" style="background:#0F1A12">
+    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 parallax-bg" alt="">
+    <div class="absolute top-[18%] right-[6%] billboard bg-[#0E0E0E] rounded-lg p-2 w-[280px] md:w-[360px] rotate-3 tilt" id="billboard"><div class="bg-[#1A2BFF] rounded p-4 text-center"><p class="font-black italic text-2xl md:text-3xl text-[#FFD9A8]" style="text-shadow:3px 3px 0 #111">wick & wax</p><p class="font-mono text-[10px] text-white/80 mt-1">LONG ST • LIGHT UP YOUR BRAND • SS26</p><img src="https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=600&auto=format&fit=crop" class="mt-2 rounded h-28 w-full object-cover" alt=""></div></div>
+    <div class="relative p-6 md:p-14"><p class="chapter-num text-white/70">CHAPTER V — MARKETING & PRODUCT NETWORK</p><h2 class="giant" style="font-size:clamp(3rem,11vw,8.5rem)">Marketing</h2><p class="serif-it text-[clamp(1.4rem,3.5vw,2.5rem)] max-w-xl">Grow sales with ads that feel like art, not noise.</p></div>
+  </div>
+  <div class="bg-[#EDE9DC] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+      <div class="card p-5 reveal"><p class="chip w-fit">Meta • TikTok • Google</p><h4 class="font-extrabold mt-3">Paid social that pays for itself</h4><div class="mt-3 rounded-xl overflow-hidden border"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=600&auto=format&fit=crop" class="h-36 w-full object-cover" alt=""><div class="p-3 bg-[#F7F4E9]"><p class="text-[12px] font-bold">Winter sale — 4.8x ROAS</p><div class="stat-bar mt-2"><div class="stat-fill" data-w="86%"></div></div></div></div><p class="text-[12px] mt-2 opacity-70">Creative testing sprints: 20 hooks in 10 days. No more boosting & praying.</p></div>
+      <div class="card p-5 reveal"><p class="chip w-fit !bg-[#FF5A1F]">SMS • WhatsApp • Email</p><h4 class="font-extrabold mt-3">Flows that print while you braai</h4><div class="mt-3 bg-black text-white rounded-xl p-4"><p class="font-mono text-[10px] opacity-60">WHATSAPP — 09:41</p><p id="smsType" class="text-[13px] mt-2 min-h-[48px]">Hey Thandi 👋 Your candle set is still in cart — 10% off till midnight? 🕯️</p><div class="flex gap-2 mt-2"><span class="bg-[#25D366] px-3 py-1 rounded-full text-[11px] font-bold">Claim 10% off</span><span class="border border-white/30 px-3 py-1 rounded-full text-[11px]">Nah I'm good</span></div></div><p class="text-[12px] mt-2 opacity-70">Klaviyo + Shopify Messaging. Avg. 34% of revenue from flows.</p></div>
+      <div class="card p-5 reveal"><p class="chip w-fit !bg-[#0A4D3A]">SEO • Content • PR</p><h4 class="font-extrabold mt-3">Own page one, not rent it</h4><div class="mt-3 flex items-center gap-2 bg-[#F7F4E9] rounded-xl p-3 border"><span class="w-10 h-10 rounded-full bg-white border flex items-center justify-center font-black">G</span><div><p class="text-[12px] font-bold">“candle shop cape town” — #1</p><p class="font-mono text-[10px] opacity-60">↑ from #14 in 4 months</p></div><span class="ml-auto text-green-600 font-bold text-sm">▲</span></div><button class="btn-ghost w-full mt-3 py-2 text-[12px]" onclick="toast('Free keyword gap report on its way')">Get free SEO teardown →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- VI CONTENT & SEO -->
+<section id="content" class="scroll-mt-10">
+  <div class="relative min-h-[78vh] bg-[#0E2233] text-white overflow-hidden flex items-end">
+    <img src="https://images.unsplash.com/photo-1493421419110-74f4e85ba126?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+    <div class="relative p-6 md:p-14"><p class="chapter-num text-white/60">CHAPTER VI — CONTENT, SEO & OPS</p><h2 class="giant" style="font-size:clamp(2.8rem,9vw,7.5rem)">Content & SEO</h2><p class="serif-it text-[clamp(1.3rem,3vw,2.2rem)]">Improve everyday workflows with words that rank.</p></div>
+  </div>
+  <div class="bg-[#E4DECE] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6">
+      <div class="card p-6 reveal"><h4 class="font-extrabold text-xl">Content engine — 30 days in 3 shoots</h4><p class="text-[13px] opacity-70">Shorts, carousels, blogs, newsletters. Shot on Long St, edited overnight.</p><div class="grid grid-cols-3 gap-2 mt-4"><img src="https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=400&auto=format&fit=crop" class="h-28 object-cover rounded-lg" alt=""><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=400&auto=format&fit=crop" class="h-28 object-cover rounded-lg" alt=""><img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?q=80&w=400&auto=format&fit=crop" class="h-28 object-cover rounded-lg" alt=""></div><div class="flex items-center gap-3 mt-4"><button id="playReel" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-[#FF5A1F] transition"><i class="fa-solid fa-play"></i></button><div><p class="text-[13px] font-bold">Watch: 48h studio edit (42K views)</p><div class="w-48 h-1 bg-black/10 rounded-full mt-1 overflow-hidden"><div id="reelBar" class="h-full bg-[#FF5A1F] w-0"></div></div></div></div></div>
+      <div class="card p-6 reveal"><h4 class="font-extrabold text-xl">SEO checklist — live score</h4><div class="space-y-3 mt-4 text-[13px]" id="seoList"><label class="flex items-center gap-3 bg-[#F7F4E9] border rounded-lg p-3 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 accent-[#FF5A1F] seo-check"> Title under 60 chars + “Cape Town” <span class="ml-auto font-mono text-[10px] opacity-60">+10</span></label><label class="flex items-center gap-3 bg-[#F7F4E9] border rounded-lg p-3 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 accent-[#FF5A1F] seo-check"> 1.1s mobile speed <span class="ml-auto font-mono text-[10px] opacity-60">+20</span></label><label class="flex items-center gap-3 bg-[#F7F4E9] border rounded-lg p-3 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-[#FF5A1F] seo-check"> 12 location pages (JHB, Durban…) <span class="ml-auto font-mono text-[10px] opacity-60">+25</span></label><label class="flex items-center gap-3 bg-[#F7F4E9] border rounded-lg p-3 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-[#FF5A1F] seo-check"> Google reviews widget <span class="ml-auto font-mono text-[10px] opacity-60">+15</span></label></div><div class="mt-4"><div class="flex justify-between text-[12px] font-bold"><span>SEO health</span><span id="seoScore">43/100</span></div><div class="stat-bar mt-1"><div id="seoFill" class="stat-fill !bg-[#FF5A1F]" style="width:43%"></div></div></div></div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-8">
+      <h4 class="font-extrabold text-xl mb-4 reveal">Loved from Sea Point to Sandton <span class="font-mono text-[11px] font-normal opacity-60">— swipe / drag</span></h4>
+      <div class="overflow-hidden rounded-2xl reveal" id="carousel"><div id="track" class="flex transition-transform duration-500" style="transform:translateX(0)"></div></div>
+      <div class="flex gap-2 mt-3"><button id="prevT" class="w-11 h-11 rounded-full border border-black/20 bg-white hover:bg-black hover:text-white transition"><i class="fa-solid fa-arrow-left"></i></button><button id="nextT" class="w-11 h-11 rounded-full border border-black/20 bg-white hover:bg-black hover:text-white transition"><i class="fa-solid fa-arrow-right"></i></button><div class="ml-auto font-mono text-[11px] opacity-60 self-center" id="tCount">1 / 4</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VII AI -->
+<section id="ai" class="scroll-mt-10">
+  <div class="relative min-h-[80vh] bg-black text-white overflow-hidden flex items-end">
+    <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+    <div class="relative p-6 md:p-14"><p class="chapter-num text-white/60">CHAPTER VII — AI AUTOMATION & AGENTS</p><h2 class="giant" style="font-size:clamp(3rem,11vw,8.5rem)">AI Agents</h2><p class="serif-it text-[clamp(1.4rem,3.5vw,2.5rem)] max-w-2xl">Sell directly in AI chats. Let robots do the tedious.</p></div>
+  </div>
+  <div class="bg-[#0E0E0E] text-white p-6 md:p-14">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-5">
+      <div class="bg-white/[.06] border border-white/10 rounded-2xl p-6 reveal"><p class="font-mono text-[11px] text-white/50">AGENTIC STOREFRONTS</p><h4 class="font-extrabold text-xl mt-2">Your catalogue, in ChatGPT & WhatsApp</h4><div class="mt-4 bg-white text-black rounded-xl p-4 text-[13px]"><p class="font-bold">🤖 Hi! Looking for a candle set under R2k?</p><div class="grid grid-cols-2 gap-2 mt-2"><div class="border rounded-lg p-2 text-center"><div class="font-black">Ember Trio</div><div class="text-[11px]">R1 899 • In stock</div></div><div class="border rounded-lg p-2 text-center"><div class="font-black">Lantern Duo</div><div class="text-[11px]">R1 450 • In stock</div></div></div><p class="mt-2 bg-black text-white text-center rounded-lg py-2 font-bold text-[12px]">Checkout in chat →</p></div><p class="text-[12px] text-white/60 mt-3">We syndicate your products to every AI platform. Set up once, sell everywhere.</p></div>
+      <div class="bg-white/[.06] border border-white/10 rounded-2xl p-6 reveal"><p class="font-mono text-[11px] text-white/50">WORKFLOWS, AUTOMATED</p><h4 class="font-extrabold text-xl mt-2">Describe it. We automate it.</h4><div class="space-y-2 mt-4 text-[12.5px]"><div class="bg-white/10 rounded-lg p-3">↳ When stock &lt; 5 → WhatsApp supplier + draft Instagram “restock” post</div><div class="bg-white/10 rounded-lg p-3">↳ Abandoned cart 1h → SMS with 10% code (Yoco-ready)</div><div class="bg-white/10 rounded-lg p-3">↳ 5-star review → thank + ask for Google review</div></div><div class="mt-4 flex gap-2"><input id="autoInput" placeholder="e.g. remind B2B clients to reorder..." class="flex-1 bg-white/10 border border-white/15 rounded-full px-4 py-2 text-[12px] placeholder:text-white/40"><button onclick="toast('Automation drafted — our team will map it in Make/n8n')" class="btn-ember px-4 py-2 text-[12px]">Build</button></div></div>
+      <div class="bg-[#FF5A1F] rounded-2xl p-6 reveal text-white"><p class="font-mono text-[11px] text-white/80">FOR DEVELOPERS — MCP READY</p><h4 class="font-black text-2xl mt-2 leading-tight">A completely new way to build for commerce.</h4><pre class="mt-4 bg-black/80 rounded-xl p-4 font-mono text-[11px] overflow-x-auto">POST /api/paperlantern/checkout
+{
+  "store": "wick-and-wax.co.za",
+  "agent": "gpt-5 + shopify-mcp",
+  "convert": "+22%"
+}</pre><button class="mt-4 bg-white text-black px-5 py-2 rounded-full font-bold text-[12px] hover:bg-black hover:text-white transition" onclick="toast('Dev docs: docs.paperlantern.xyz — API key sent')">Read dev docs →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- VIII CARE -->
+<section id="care" class="scroll-mt-10">
+  <div class="relative min-h-[78vh] bg-[#10241A] text-white overflow-hidden flex items-end">
+    <img src="https://images.unsplash.com/photo-1534759846116-5799c33ce22a?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50 parallax-bg" alt="">
+    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+    <div class="relative p-6 md:p-14"><p class="chapter-num text-white/60">CHAPTER VIII — CARE, HOSTING & GROWTH</p><h2 class="giant" style="font-size:clamp(3rem,11vw,8.5rem)">Lantern-fast</h2><p class="serif-it text-[clamp(1.4rem,3.5vw,2.5rem)]">Ship confidently with care plans that never sleep.</p></div>
+  </div>
+  <div class="bg-[#EDE9DC] p-6 md:p-14">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-5" id="pricing">
+      <div class="card p-6 reveal"><p class="font-mono text-[11px] opacity-60">LAUNCH — FOR NEW BRANDS</p><p class="font-black text-4xl mt-2">R9 500<span class="text-sm font-normal"> / once-off</span></p><ul class="text-[13px] mt-4 space-y-2 opacity-80"><li>✓ 5-page site (2 weeks)</li><li>✓ Copy polish + basic SEO</li><li>✓ WhatsApp + Maps setup</li><li>✓ 30 days support</li></ul><button class="btn-ghost w-full mt-5 py-3 text-sm plan-btn" data-plan="Launch R9 500">Choose Launch</button></div>
+      <div class="card p-6 reveal !bg-black !text-white relative overflow-hidden"><span class="absolute top-4 right-4 bg-[#FF5A1F] text-[10px] font-black px-3 py-1 rounded-full">MOST POPULAR</span><p class="font-mono text-[11px] text-white/60">GROWTH — FOR SCALERS</p><p class="font-black text-4xl mt-2">R14 500<span class="text-sm font-normal"> /mo</span></p><ul class="text-[13px] mt-4 space-y-2 text-white/80"><li>✓ Everything in Launch + shop</li><li>✓ 2 campaigns / month (Meta+Google)</li><li>✓ SEO + 4 blogs + email flows</li><li>✓ Lantern hosting + daily backups</li></ul><button class="btn-ember w-full mt-5 py-3 text-sm plan-btn" data-plan="Growth R14 500/mo">Choose Growth</button></div>
+      <div class="card p-6 reveal"><p class="font-mono text-[11px] opacity-60">GLOW EDITION — CUSTOM</p><p class="font-black text-4xl mt-2">Let's talk</p><ul class="text-[13px] mt-4 space-y-2 opacity-80"><li>✓ Rebrand + custom dev + AI agents</li><li>✓ B2B portals, multi-region, POS</li><li>✓ Dedicated squad on Slack</li><li>✓ Quarterly growth sprints</li></ul><button class="btn-ghost w-full mt-5 py-3 text-sm plan-btn" data-plan="Glow Edition Custom">Book scoping call</button></div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-8 grid md:grid-cols-2 gap-5">
+      <div class="card p-6 reveal"><h4 class="font-extrabold">FAQ — straight answers, no agency fluff</h4><div class="mt-3 divide-y" id="faq"><div class="faq-item py-3"><button class="faq-q flex justify-between w-full font-bold text-[14px] text-left">How fast can you launch? <span class="faq-icon">+</span></button><div class="faq-a"><p class="text-[13px] opacity-70 pt-2">Brochure sites in 10–14 days, Shopify stores in 3–4 weeks. We work in weekly sprints with Loom updates — you’ll never chase us.</p></div></div><div class="faq-item py-3"><button class="faq-q flex justify-between w-full font-bold text-[14px] text-left">Do you offer payment plans? <span class="faq-icon">+</span></button><div class="faq-a"><p class="text-[13px] opacity-70 pt-2">Yes — 50/50 split or 3x monthly via Yoco/Payfast. Retainers can pause anytime with 30 days notice.</p></div></div><div class="faq-item py-3"><button class="faq-q flex justify-between w-full font-bold text-[14px] text-left">Will I own my site? <span class="faq-icon">+</span></button><div class="faq-a"><p class="text-[13px] opacity-70 pt-2">100%. Domain, Shopify, Google assets in your name from day one. No hostage situations — that’s so 2015.</p></div></div><div class="faq-item py-3"><button class="faq-q flex justify-between w-full font-bold text-[14px] text-left">Do you work outside Cape Town? <span class="faq-icon">+</span></button><div class="faq-a"><p class="text-[13px] opacity-70 pt-2">Daily. JHB, Durban, Gqeberha + UK/US clients. Slack + meetups when we’re in town.</p></div></div></div></div>
+      <div class="card p-6 reveal bg-[#FFF4E6]"><h4 class="font-extrabold">Shipping-style tracking, but for your project</h4><div class="mt-4 space-y-3 font-mono text-[11px]"><div class="flex justify-between bg-white border rounded-lg p-3"><span>● DISCOVERY CALL — DONE</span><span>✓</span></div><div class="flex justify-between bg-white border rounded-lg p-3"><span>● DESIGN IN FIGMA — IN TRANSIT</span><span class="text-[#FF5A1F]">●●●○</span></div><div class="flex justify-between bg-white border rounded-lg p-3 opacity-60"><span>○ BUILD + QA — QUEUED</span><span>TRACK #PL-3821</span></div></div><p class="text-[12px] mt-3 opacity-70">Every client gets a live Notion tracker + Loom drops. Like Takealot tracking, but you actually get excited.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- IX CONTACT -->
+<section id="contact" class="scroll-mt-10 bg-[#0E0E0E] text-white">
+  <div class="p-6 md:p-14 max-w-6xl mx-auto grid lg:grid-cols-2 gap-10">
+    <div class="reveal">
+      <p class="chapter-num text-white/50">CHAPTER IX — START YOUR RENAISSANCE</p>
+      <h2 class="giant mt-2" style="font-size:clamp(2.8rem,8vw,5.5rem)">Let's make<br><span class="serif-it font-medium text-[#FF8A5C]">your glow-up.</span></h2>
+      <p class="text-white/70 mt-4 text-[15px]">Tell us where you want to be in 12 months. We’ll reply within 1 business day with next steps + honest pricing.</p>
+      <div class="mt-6 space-y-3 text-[14px]"><p><i class="fa-solid fa-envelope text-[#FF5A1F] mr-2"></i> hello@paperlantern.xyz</p><p><i class="fa-solid fa-phone text-[#FF5A1F] mr-2"></i> +27 21 418 3320 • WhatsApp same</p><p><i class="fa-solid fa-location-dot text-[#FF5A1F] mr-2"></i> 44 Long Street, Cape Town City Centre</p><p><i class="fa-solid fa-clock text-[#FF5A1F] mr-2"></i> Mon–Fri 8:30–17:00 SAST</p></div>
+      <div class="flex gap-3 mt-6"><a href="#" class="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#FF5A1F] transition"><i class="fa-brands fa-instagram"></i></a><a href="#" class="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#FF5A1F] transition"><i class="fa-brands fa-tiktok"></i></a><a href="#" class="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#FF5A1F] transition"><i class="fa-brands fa-linkedin"></i></a><a href="#" class="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#FF5A1F] transition"><i class="fa-brands fa-x-twitter"></i></a></div>
+      <div class="mt-8 bg-white/5 border border-white/10 rounded-2xl p-5"><p class="font-mono text-[11px] text-white/50">WHAT HAPPENS NEXT?</p><div class="flex items-center gap-2 mt-3 text-[12px]"><span class="bg-[#FF5A1F] w-7 h-7 rounded-full flex items-center justify-center font-bold">1</span> 20-min call <span class="opacity-40">→</span> <span class="bg-white/15 w-7 h-7 rounded-full flex items-center justify-center font-bold">2</span> Proposal in 24h <span class="opacity-40">→</span> <span class="bg-white/15 w-7 h-7 rounded-full flex items-center justify-center font-bold">3</span> Launch in weeks</div></div>
+    </div>
+    <div class="bg-[#EDE9DC] text-black rounded-3xl p-6 md:p-8 reveal">
+      <h3 class="font-extrabold text-2xl">Get a proposal in 24 hours</h3><p class="text-[13px] opacity-70">No spam. No 40-page decks. Just price + plan.</p>
+      <form id="leadForm" class="mt-5 space-y-3">
+        <div class="grid grid-cols-2 gap-3"><input required id="fName" placeholder="Your name *" class="border rounded-xl px-4 py-3 text-[13px] bg-white w-full"><input required id="fPhone" placeholder="WhatsApp / phone *" class="border rounded-xl px-4 py-3 text-[13px] bg-white w-full"></div>
+        <input required id="fEmail" type="email" placeholder="Email *" class="border rounded-xl px-4 py-3 text-[13px] bg-white w-full">
+        <select id="fService" class="border rounded-xl px-4 py-3 text-[13px] bg-white w-full"><option>New website</option><option>Online store (Shopify/Woo)</option><option>Branding + logo</option><option>Marketing (ads + SEO)</option><option>AI automation</option><option>Something else</option></select>
+        <div class="flex gap-2 flex-wrap" id="budgetChips"><button type="button" data-b="R10–20k" class="budget border rounded-full px-4 py-1.5 text-[12px] font-bold">R10–20k</button><button type="button" data-b="R20–50k" class="budget border rounded-full px-4 py-1.5 text-[12px] font-bold !bg-black !text-white">R20–50k</button><button type="button" data-b="R50k+" class="budget border rounded-full px-4 py-1.5 text-[12px] font-bold">R50k+</button></div>
+        <textarea id="fMsg" rows="3" placeholder="Tell us about your goals... (e.g. I sell candles in CPT, need online store before December)" class="border rounded-xl px-4 py-3 text-[13px] bg-white w-full"></textarea>
+        <button class="btn-ember w-full py-4 text-[15px]">Get my proposal →</button>
+        <p class="text-center font-mono text-[10px] opacity-60">● AVG RESPONSE: 3H 12M • ●●●●● 4.9 (87 REVIEWS)</p>
+      </form>
+      <div id="formSuccess" class="hidden text-center py-10"><div class="w-16 h-16 bg-green-500 rounded-full mx-auto flex items-center justify-center text-white text-2xl"><i class="fa-solid fa-check"></i></div><h4 class="font-black text-2xl mt-4">Sharp, sharp! Received.</h4><p class="text-[13px] opacity-70 mt-2">We’ll WhatsApp you within 1 business day.<br>Ref: <span id="refNum" class="font-mono font-bold">PL-0000</span></p><a href="#" class="btn-ghost inline-block px-6 py-2 text-[13px] mt-4">Chat on WhatsApp →</a></div>
+    </div>
+  </div>
+  <footer class="border-t border-white/10 px-6 md:px-14 py-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6">
+      <div><p class="font-black text-xl">Paperlantern<span class="text-[#FF5A1F]">.xyz</span></p><p class="serif-it text-white/60">The Glow Edition — Winter ’26</p><p class="font-mono text-[11px] text-white/40 mt-2">© 2026 Paperlantern (Pty) Ltd • Cape Town • Privacy • PAIA</p></div>
+      <div class="flex gap-10 text-[13px]"><div class="space-y-1"><p class="font-mono text-[10px] text-white/40">STUDIO</p><a href="#strategy" class="block hover:text-[#FF5A1F]">Strategy</a><a href="#web" class="block hover:text-[#FF5A1F]">Web</a><a href="#commerce" class="block hover:text-[#FF5A1F]">Commerce</a></div><div class="space-y-1"><p class="font-mono text-[10px] text-white/40">GROW</p><a href="#marketing" class="block hover:text-[#FF5A1F]">Marketing</a><a href="#ai" class="block hover:text-[#FF5A1F]">AI Agents</a><a href="#care" class="block hover:text-[#FF5A1F]">Pricing</a></div></div>
+      <button id="topBtn" class="w-12 h-12 rounded-full border border-white/20 hover:bg-[#FF5A1F] transition self-start md:self-center"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+  </footer>
+</section>
+
+</main>
+
+<!-- CART DRAWER -->
+<div id="cartOverlay" class="fixed inset-0 bg-black/50 z-[140] hidden"></div>
+<aside id="cartDrawer" class="fixed top-0 right-0 h-full w-[360px] max-w-[90vw] bg-white z-[141] translate-x-full transition-transform duration-500 flex flex-col rounded-l-3xl overflow-hidden">
+  <div class="p-5 border-b flex justify-between items-center"><h4 class="font-black text-lg">Your cart (<span id="cartCount2">0</span>)</h4><button id="cartClose" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"><p class="text-sm opacity-60 text-center mt-10">Your cart is empty — let's light it up 🕯️</p></div>
+  <div class="p-5 border-t bg-[#F7F4E9]"><div class="flex justify-between font-black"><span>Subtotal</span><span id="cartTotal">R0</span></div><button onclick="toast('Demo checkout — our team would send Yoco link')" class="btn-ember w-full mt-3 py-3 text-sm">Checkout securely →</button><p class="text-center font-mono text-[10px] mt-2 opacity-60">YOCO • PAYFAST • SNAPSCAN • APPLE PAY</p></div>
+</aside>
+
+<div class="toast bg-black text-white px-5 py-3 rounded-full text-[13px] font-semibold shadow-2xl flex items-center gap-2" id="toast"><span class="w-2 h-2 rounded-full bg-[#FF5A1F]"></span><span id="toastMsg">Done</span></div>
+
+<!-- SHOWREEL MODAL -->
+<div id="reelModal" class="fixed inset-0 z-[150] bg-black/90 hidden items-center justify-center p-4">
+  <div class="bg-[#111] rounded-2xl overflow-hidden max-w-3xl w-full video-glow">
+    <div class="flex justify-between items-center p-4 text-white"><span class="font-mono text-[11px] tracking-widest">PAPERLANTERN SHOWREEL ’26 — 01:24</span><button id="reelClose" class="w-9 h-9 rounded-full border border-white/30"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60" alt=""><button id="reelPlayBig" class="relative w-20 h-20 rounded-full bg-[#FF5A1F] text-white text-2xl hover:scale-110 transition"><i class="fa-solid fa-play ml-1"></i></button><div id="reelProgress" class="absolute bottom-0 left-0 h-1 bg-[#FF5A1F] w-0"></div></div>
+    <div class="p-4 text-white/70 text-[13px]">Wick & Wax Studio • Jozi Gin • Ubuntu Legal • 240+ launches. Shot & cut by Paperlantern Studio.</div>
+  </div>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+// TOAST
+function toast(m){document.getElementById('toastMsg').textContent=m;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600)}
+// LOADER
+(function(){
+  const tl=gsap.timeline();
+  tl.to('#ll1',{width:'80%',duration:.8,ease:'power2.out'},0)
+    .to('#ll2',{width:'80%',duration:.8,ease:'power2.out'},0)
+    .to('#ll3',{height:'100%',duration:1,ease:'power2.out'},0)
+    .from('#loader-title',{y:40,opacity:0,duration:.8,ease:'power3.out'},.2)
+    .to('#loader',{yPercent:-100,duration:.9,ease:'power4.inOut',delay:.6})
+    .set('#loader',{display:'none'})
+    .from('#heroBox',{y:60,opacity:0,duration:1,ease:'power3.out'},'-=.5')
+    .from('#figL',{x:-120,opacity:0,duration:1.1,ease:'power3.out'},'-=.9')
+    .from('#figR',{x:120,opacity:0,duration:1.1,ease:'power3.out'},'-=1');
+  let p=0;const iv=setInterval(()=>{p=Math.min(100,p+Math.random()*22);const el=document.querySelector('#loader p:last-child');if(el)el.textContent=`loading renaissance — ${Math.floor(p)}%`;if(p>=100)clearInterval(iv)},200);
+})();
+// PROGRESS + PARALLAX + CURSOR
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;const pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=pct+'%';
+  document.getElementById('heroBg').style.transform=`translateY(${h.scrollTop*.25}px) scale(1.05)`;
+});
+gsap.utils.toArray('.parallax-bg').forEach(el=>{gsap.to(el,{yPercent:18,scale:1.1,ease:'none',scrollTrigger:{trigger:el.parentElement,scrub:true}})});
+gsap.utils.toArray('.giant').forEach(el=>{gsap.from(el,{y:80,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}})});
+gsap.utils.toArray('.reveal').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}})});
+(function(){
+  const d=document.getElementById('cursor-dot'),r=document.getElementById('cursor-ring');let x=0,y=0,rx=0,ry=0;
+  window.addEventListener('mousemove',e=>{x=e.clientX;y=e.clientY;d.style.left=x+'px';d.style.top=y+'px'});
+  (function loop(){rx+=(x-rx)*.15;ry+=(y-ry)*.15;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button,input,.card').forEach(el=>{el.addEventListener('mouseenter',()=>r.classList.add('hovering'));el.addEventListener('mouseleave',()=>r.classList.remove('hovering'))});
+})();
+// NAV SPY
+const secs=[...document.querySelectorAll('section[id]')];const links=[...document.querySelectorAll('.sidebar-link')];
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id))}})},{rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(s=>io.observe(s));
+// MOBILE MENU
+const mm=document.getElementById('mobileMenu');
+document.getElementById('menuBtn').onclick=()=>{mm.classList.remove('hidden');mm.classList.add('flex')};
+document.getElementById('menuClose').onclick=closeM;mm.querySelectorAll('a').forEach(a=>a.onclick=closeM);
+function closeM(){mm.classList.add('hidden');mm.classList.remove('flex')}
+// SCROLL LINE
+gsap.to('#scrollLine',{y:40,duration:1.2,repeat:-1,yoyo:true,ease:'power1.inOut'});
+// PULSE CHART
+(function(){const c=document.getElementById('pulseChart');if(!c)return;const ctx=c.getContext('2d');const vals=[12,22,18,32,28,45,52,48,68,78];let f=0;function draw(){ctx.clearRect(0,0,c.width,c.height);const w=c.width/vals.length;vals.forEach((v,i)=>{const h=(v/100)*70*f;ctx.fillStyle=i===vals.length-1?'#FF5A1F':'#111';ctx.beginPath();ctx.roundRect(i*w+2,80-h,w-6,h,4);ctx.fill()});if(f<1){f+=.05;requestAnimationFrame(draw)}}draw();ScrollTrigger.create({trigger:c,start:'top 85%',once:true,onEnter:()=>f=0})})();
+// COUNTERS + BARS
+const cio=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const el=e.target;if(el.classList.contains('counter')){let t=+el.dataset.target,c=0;const iv=setInterval(()=>{c+=Math.ceil(t/40);if(c>=t){c=t;clearInterval(iv)}el.textContent=c},30)}if(el.classList.contains('stat-fill')){el.style.transition='width 1.2s cubic-bezier(.2,.8,.2,1)';el.style.width=el.dataset.w||'70%'}cio.unobserve(el)}})},{threshold:.4});
+document.querySelectorAll('.counter,.stat-fill[data-w]').forEach(el=>cio.observe(el));
+// CHAT
+const chatBox=document.getElementById('chatDemo'),chatInput=document.getElementById('chatInput');
+function addMsg(txt,me){const d=document.createElement('div');d.className='chat-bubble '+(me?'bg-[#FF5A1F] text-white ml-auto':'bg-white text-black');d.innerHTML=txt;chatBox.appendChild(d);chatBox.scrollTop=chatBox.scrollHeight;return d}
+function botAnswer(q){
+  q=q.toLowerCase();
+  if(q.includes('price')||q.includes('cost')||q.includes('much'))return `Sharp question! Sites from <b>R9 500</b>, stores from <b>R19 500</b>, growth retainers <b>R14 500/mo</b>. 50/50 payment via Yoco. Want an exact quote? Hit <b>Start project</b> below — 24h turnaround.`;
+  if(q.includes('seo')||q.includes('rank')||q.includes('google'))return `SEO takes <b>3–6 months</b> to cook properly in SA. We do tech fixes week 1, content month 1, links ongoing. Most clients hit page 1 for 5–10 money keywords by month 4.`;
+  if(q.includes('shopify')||q.includes('woo')||q.includes('store'))return `Yes — we're Shopify Partners + Woo experts. Yoco, Payfast, SnapScan, Uber Direct delivery, POS for Long St stores. Avg. build 3 weeks, <b>+31% checkout conversion</b>.`;
+  if(q.includes('time')||q.includes('long')||q.includes('fast'))return `Brochure site: <b>10–14 days</b>. E-commerce: <b>3–4 weeks</b>. Rebrand: <b>3 weeks</b>. We send Loom updates every Friday — no chasing.`;
+  if(q.includes('hello')||q.includes('hi')||q.includes('hey'))return `Hey hey! 👋 Are you looking for a <b>new site</b>, <b>more sales</b>, or <b>rebrand</b>? Drop one word and I'll map your next 3 moves.`;
+  return `Love that. For <i>“${q.slice(0,60)}”</i> I'd recommend: <b>1)</b> free 20-min audit, <b>2)</b> 90-day roadmap, <b>3)</b> launch sprint. Drop your email at <b>#contact</b> and we'll send it in 24h — no fluff.`;
+}
+function sendChat(txt){txt=txt||chatInput.value.trim();if(!txt)return;addMsg(txt,true);chatInput.value='';const t=document.createElement('div');t.className='chat-bubble bg-white/20 text-white typing';t.innerHTML='<span></span> <span></span> <span></span>';chatBox.appendChild(t);setTimeout(()=>{t.remove();addMsg(botAnswer(txt),false)},900)}
+document.getElementById('chatSend').onclick=()=>sendChat();
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
+document.querySelectorAll('.chat-pill').forEach(b=>b.onclick=()=>sendChat(b.dataset.q));
+// THEME EDITOR
+const prev=document.getElementById('livePreview');
+document.getElementById('headlineInput').addEventListener('input',e=>{document.getElementById('previewHeadline').innerHTML=e.target.value.toUpperCase().replace(/\n/g,'<br>')||'YOUR HEADLINE'});
+document.querySelectorAll('#swatches button').forEach(b=>b.onclick=()=>{prev.style.background=b.dataset.c;prev.style.color=(b.dataset.c==='#E8A317'||b.dataset.c==='#FF5A1F')?'#111':'#fff';document.getElementById('simScore').textContent=Math.floor(88+Math.random()*10)+'/100';toast('Vibe updated — SimGym re-scored')});
+document.getElementById('layoutA').onclick=e=>{prev.classList.remove('!flex-row');toast('Bold hero layout applied')};
+document.getElementById('layoutB').onclick=()=>toast('Split layout — designer will mock this in Figma');
+// A/B SLIDER
+(function(){const wrap=document.getElementById('abWrap'),top=document.getElementById('abTop'),h=document.getElementById('abHandle');let drag=false;function set(x){const r=wrap.getBoundingClientRect();let p=((x-r.left)/r.width*100);p=Math.max(5,Math.min(95,p));top.style.width=p+'%';h.style.left=p+'%'}wrap.addEventListener('pointerdown',e=>{drag=true;set(e.clientX);wrap.setPointerCapture(e.pointerId)});wrap.addEventListener('pointermove',e=>{if(drag)set(e.clientX)});wrap.addEventListener('pointerup',()=>drag=false)})();
+// PRODUCTS + CART
+const products=[
+  {id:1,name:'Ember Trio Candle Set',price:1899,img:'https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=600&auto=format&fit=crop',tag:'BEST SELLER'},
+  {id:2,name:'Wick Heavy Hoodie',price:899,img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop',tag:'NEW'},
+  {id:3,name:'CPT Amber Cap',price:449,img:'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=600&auto=format&fit=crop',tag:'LOW STOCK'}
+];
+let cart=[];
+const grid=document.getElementById('productGrid');
+function renderProducts(){grid.innerHTML=products.map(p=>`<div class="card overflow-hidden reveal !opacity-100 !transform-none"><div class="relative"><img src="${p.img}" class="h-44 w-full object-cover" alt=""><span class="absolute top-2 left-2 bg-black text-white text-[10px] font-black px-2 py-1 rounded-full">${p.tag}</span></div><div class="p-4"><p class="font-bold text-[14px]">${p.name}</p><p class="font-mono text-[12px] opacity-60">R${p.price.toLocaleString('en-ZA')}</p><button onclick="addCart(${p.id})" class="btn-ember w-full mt-3 py-2 text-[12px]">Add to cart +</button></div></div>`).join('')}
+function addCart(id){const p=products.find(x=>x.id===id);const f=cart.find(x=>x.id===id);if(f)f.qty++;else cart.push({...p,qty:1});updateCart();toast(p.name+' added — glowing choice!');openCart()}
+function updateCart(){const n=cart.reduce((a,c)=>a+c.qty,0);document.getElementById('cartCount').textContent=n;document.getElementById('cartCount2').textContent=n;const total=cart.reduce((a,c)=>a+c.price*c.qty,0);document.getElementById('cartTotal').textContent='R'+total.toLocaleString('en-ZA');const box=document.getElementById('cartItems');if(!cart.length){box.innerHTML='<p class="text-sm opacity-60 text-center mt-10">Your cart is empty — let\'s light it up 🕯️</p>';return}box.innerHTML=cart.map(c=>`<div class="flex gap-3 border rounded-xl p-2"><img src="${c.img}" class="w-16 h-16 rounded-lg object-cover" alt=""><div class="flex-1"><p class="font-bold text-[13px]">${c.name}</p><p class="font-mono text-[11px] opacity-60">R${c.price} x ${c.qty}</p><div class="flex gap-2 mt-1"><button onclick="chQty(${c.id},-1)" class="w-6 h-6 rounded-full border text-[12px]">-</button><button onclick="chQty(${c.id},1)" class="w-6 h-6 rounded-full border text-[12px]">+</button></div></div><button onclick="rmItem(${c.id})" class="text-black/40 hover:text-red-600"><i class="fa-solid fa-trash text-sm"></i></button></div>`).join('')}
+function chQty(id,d){const it=cart.find(x=>x.id===id);it.qty+=d;if(it.qty<=0)cart=cart.filter(x=>x.id!==id);updateCart()}
+function rmItem(id){cart=cart.filter(x=>x.id!==id);updateCart()}
+function openCart(){document.getElementById('cartDrawer').style.transform='translateX(0)';document.getElementById('cartOverlay').classList.remove('hidden')}
+function closeCart(){document.getElementById('cartDrawer').style.transform='translateX(100%)';document.getElementById('cartOverlay').classList.add('hidden')}
+document.getElementById('cartOpen').onclick=openCart;document.getElementById('cartClose').onclick=closeCart;document.getElementById('cartOverlay').onclick=closeCart;
+renderProducts();updateCart();
+// SMS TYPEWRITER
+(function(){const el=document.getElementById('smsType');const msgs=["Hey Thandi 👋 Your candle set is still in cart — 10% off till midnight? 🕯️","New drop: Ember trio just landed in Long St. Want first dibs? 🔥","Your order #3821 is out for delivery with Uber Direct 🛵"];let mi=0,ci=0;setInterval(()=>{ci++;if(ci>msgs[mi].length+30){mi=(mi+1)%msgs.length;ci=0}el.textContent=msgs[mi].slice(0,ci)},45)})();
+// BILLBOARD TILT
+window.addEventListener('scroll',()=>{const b=document.getElementById('billboard');if(!b)return;const r=b.getBoundingClientRect();const p=(window.innerHeight-r.top)/window.innerHeight;b.style.transform=`rotate(${3+p*4}deg) translateY(${p*-20}px)`});
+// TESTIMONIALS
+const testi=[
+  {n:'Lerato M. — Wick & Wax, CPT',t:'Paperlantern rebuilt our Shopify in 3 weeks. Checkout conversion went from 1.1% to 3.8%. They move like a lantern crew — bright, warm, precise.',s:5,img:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=200&auto=format&fit=crop'},
+  {n:'Johan V. — Jozi Gin Co.',t:'Branding + site + ads under one roof. ROAS 4.8x first month. The weekly Loom updates meant I never had to chase once.',s:5,img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop'},
+  {n:'Aisha K. — Ubuntu Legal, JHB',t:'From dusty Word doc to premium brand that closes corporate retainers. Proposal in 24h as promised. Worth every rand.',s:5,img:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop'},
+  {n:'Daniel O. — FitFuel Durban',t:'SEO from page 4 to #1 for “protein Durban”. WhatsApp flows now drive 34% of revenue. Lantern-fast support indeed.',s:5,img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop'}
+];
+let ti=0;const track=document.getElementById('track');
+function renderT(){track.innerHTML=testi.map(x=>`<div class="min-w-full md:min-w-[50%] lg:min-w-[33.333%] p-2"><div class="card p-6 h-full"><div class="flex gap-1 text-[#FF5A1F] text-[12px]">${'★'.repeat(x.s)}</div><p class="text-[14px] mt-2 leading-relaxed">“${x.t}”</p><div class="flex items-center gap-3 mt-4"><img src="${x.img}" class="w-10 h-10 rounded-full object-cover" alt=""><p class="text-[12px] font-bold">${x.n}</p></div></div></div>`).join('');updT()}
+function updT(){const per=window.innerWidth<768?100:window.innerWidth<1024?50:33.333;const max=testi.length-(100/per);ti=Math.max(0,Math.min(ti,max));track.style.transform=`translateX(-${ti*per}%)`;document.getElementById('tCount').textContent=(ti+1)+' / '+(max+1)}
+document.getElementById('nextT').onclick=()=>{ti++;const per=window.innerWidth<768?100:window.innerWidth<1024?50:33.333;if(ti>testi.length-(100/per))ti=0;updT()};
+document.getElementById('prevT').onclick=()=>{ti--;if(ti<0)ti=0;updT()};
+renderT();window.addEventListener('resize',updT);setInterval(()=>{ti++;const per=window.innerWidth<768?100:window.innerWidth<1024?50:33.333;if(ti>testi.length-(100/per))ti=0;updT()},6000);
+// SEO CHECK
+document.querySelectorAll('.seo-check').forEach(c=>c.addEventListener('change',()=>{const all=[...document.querySelectorAll('.seo-check')];const weights=[10,20,25,15];let s=13;all.forEach((x,i)=>{if(x.checked)s+=weights[i]});document.getElementById('seoScore').textContent=s+'/100';document.getElementById('seoFill').style.width=s+'%'}));
+// REEL
+let reelInt;document.getElementById('playReel').onclick=function(){this.innerHTML='<i class="fa-solid fa-pause"></i>';let w=0;clearInterval(reelInt);reelInt=setInterval(()=>{w+=4;document.getElementById('reelBar').style.width=w+'%';if(w>=100){clearInterval(reelInt);document.getElementById('playReel').innerHTML='<i class="fa-solid fa-play"></i>';toast('Full edit sent — check your inbox')}},120)};
+// FAQ
+document.querySelectorAll('.faq-q').forEach(b=>b.onclick=()=>{const it=b.parentElement;const open=it.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!open)it.classList.add('open')});
+// BUDGET + PLANS + FORM
+let budget='R20–50k';document.querySelectorAll('.budget').forEach(b=>b.onclick=e=>{e.preventDefault();document.querySelectorAll('.budget').forEach(x=>x.classList.remove('!bg-black','!text-white'));b.classList.add('!bg-black','!text-white');budget=b.dataset.b});
+document.querySelectorAll('.plan-btn').forEach(b=>b.onclick=()=>{document.getElementById('contact').scrollIntoView({behavior:'smooth'});document.getElementById('fMsg').value=`Hi! I'm interested in ${b.dataset.plan}. `;toast(b.dataset.plan+' selected — finish the form')});
+document.getElementById('leadForm').addEventListener('submit',e=>{e.preventDefault();const n=document.getElementById('fName').value.trim(),p=document.getElementById('fPhone').value.trim(),em=document.getElementById('fEmail').value.trim();if(!n||!p||!em){toast('Please fill name, phone + email');return}document.getElementById('refNum').textContent='PL-'+Math.floor(1000+Math.random()*9000);document.getElementById('leadForm').classList.add('hidden');document.getElementById('formSuccess').classList.remove('hidden');toast('Sharp sharp '+n.split(' ')[0]+'! Proposal incoming in 24h')});
+// MODAL
+const rm=document.getElementById('reelModal');
+document.getElementById('showreelBtn').onclick=()=>{rm.classList.remove('hidden');rm.classList.add('flex')};
+document.getElementById('reelClose').onclick=()=>{rm.classList.add('hidden');rm.classList.remove('flex')};
+rm.onclick=e=>{if(e.target===rm){rm.classList.add('hidden');rm.classList.remove('flex')}};
+document.getElementById('reelPlayBig').onclick=function(){let w=0;this.innerHTML='<i class="fa-solid fa-pause"></i>';const bar=document.getElementById('reelProgress');const iv=setInterval(()=>{w+=2;bar.style.width=w+'%';if(w>=100){clearInterval(iv);toast('That’s a wrap — let’s make yours?')}},60)};
+document.getElementById('topBtn').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+// MAGNETIC
+document.querySelectorAll('.magnetic').forEach(el=>{el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.15}px,${(e.clientY-r.top-r.height/2)*.15}px)`});el.addEventListener('mouseleave',()=>el.style.transform='')});
+// HERO MOUSE PARALLAX
+document.getElementById('hero').addEventListener('mousemove',e=>{const cx=(e.clientX/window.innerWidth-.5);gsap.to('#figL',{x:cx*-30,duration:.8});gsap.to('#figR',{x:cx*30,duration:.8});gsap.to('#heroBox',{x:cx*12,duration:.8})});
+</script>
+</body>
+</html>
